@@ -1,0 +1,192 @@
+@scope (prompt-input-container) {
+	:scope {
+		position: absolute;
+		width: 96%;
+		left: 2%;
+		bottom: 0.2em;
+		display: flex;
+		align-items: center;
+		padding: 0.4em;
+		border-radius: 0.5em;
+		background-color: light-dark(white, hsl(0, 0%, 20%));
+
+		& atom-icon svg {
+			height: 1.2em;
+		}
+	}
+
+	menu {
+		padding-left: 0;
+		margin-block: 0;
+		width: 8em;
+		position: absolute;
+		bottom: 2.5em;
+		z-index: 1;
+		border-radius: 0.4em;
+		box-shadow: var(--card);
+		background-color: light-dark(white, hsl(0, 0%, 20%));
+		transform-origin: bottom;
+		scale: 1 0;
+		transition: scale 200ms ease-out;
+
+		& li {
+			list-style-type: none;
+			padding: 0.2em 0.5em;
+			margin-bottom: 0.2em;
+			cursor: pointer;
+		}
+	}
+
+	attachment-plus-box {
+		& menu {
+			width: fit-content;
+
+			& li {
+				display: flex;
+				align-items: center;
+				column-gap: 0.4em;
+			}
+		}
+
+		&:focus-within > menu {
+			scale: 1 1;
+		}
+	}
+
+	text-auto-completion,
+	variable-completion {
+		max-height: 6lh;
+		padding: 0;
+		border-radius: 0.4em;
+
+		& option {
+			padding: 0.2em 0.4em;
+
+			&:hover {
+				background-color: light-dark(hsl(0, 0%, 90%), hsl(0, 0%, 28%));
+			}
+
+			&[select] {
+				background-color: light-dark(hsl(278, 33%, 86%), hsl(278, 6%, 36%));
+			}
+		}
+	}
+}
+
+@scope (prompt-editor-pad) {
+	:scope {
+		flex-grow: 1;
+		min-height: 2lh;
+		max-height: 15lh;
+		padding: 0.2em;
+		font-family: monospace;
+		white-space: pre;
+		overflow-y: auto;
+		scrollbar-width: thin;
+	}
+
+	& var {
+		font-weight: bold;
+	}
+}
+
+@scope (snippet-container) {
+	:scope {
+		display: block;
+		width: 83%;
+		padding: 0;
+		position: absolute;
+		bottom: 3lh;
+		margin-left: 14.5%;
+		max-height: 86vh;
+		overflow-y: auto;
+		scrollbar-width: thin;
+		transform-origin: bottom;
+		scale: 1 0;
+		transition: scale 200ms ease-out;
+		box-shadow: var(--card);
+		border-radius: 0.5em 0.5em 0 0;
+		background-color: light-dark(white, black);
+
+		&:popover-open {
+			@starting-style {
+				scale: 1 0;
+			}
+
+			scale: 1 1;
+		}
+	}
+
+	snippet-popup-header {
+		list-style-type: none;
+		padding: 0.4em;
+		display: flex;
+		justify-content: space-between;
+		box-shadow: var(--card);
+		border-radius: 0.4em 0.4em 0 0;
+		background-color: light-dark(whitesmoke, hsl(0, 0%, 25%));
+
+		& select {
+			padding: 0.2em;
+			color: inherit;
+			border: var(--border);
+			border-radius: 0.4em;
+		}
+	}
+
+	snippet-list {
+		display: flex;
+		flex-direction: column;
+		row-gap: 0.4em;
+		padding: 0.4em;
+	}
+}
+
+@scope (snippet-card) {
+	:scope {
+		display: flex;
+		justify-content: space-between;
+		column-gap: 0.4em;
+		padding: 0.4em;
+		border-radius: 0.4em;
+		box-shadow: var(--card);
+		background-color: light-dark(white, hsl(0, 0%, 16%));
+	}
+
+	.column {
+		display: flex;
+		flex-direction: column;
+		row-gap: 0.5em;
+		position: relative;
+	}
+
+	.title {
+		font-weight: bold;
+		font-size: 1rem;
+	}
+
+	.prompt {
+		line-clamp: 1;
+		font-family: monospace;
+		font-size: 0.9rem;
+	}
+
+	.description {
+		line-clamp: 1;
+		font-size: small;
+		color: light-dark(hwb(0 0% 90%), whitesmoke);
+	}
+
+	kbd {
+		position: absolute;
+		right: 0;
+		padding: 0.2em 0.4em;
+		border-radius: 0.8em;
+		box-shadow: var(--card);
+		background-color: light-dark(whitesmoke, hsl(0, 0%, 25%));
+	}
+}
+
+prompt-editor-pad:empty ~ atom-icon {
+	display: none;
+}

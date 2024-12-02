@@ -1,0 +1,83 @@
+* {
+	box-sizing: border-box;
+}
+
+svg {
+	height: 1.5em;
+	vertical-align: middle;
+	fill: var(--icon-clr);
+	cursor: pointer;
+}
+
+viewmode-header {
+	box-shadow: var(--card);
+	display: flex;
+	margin-bottom: 0.2em;
+
+	& label {
+		flex-grow: 1;
+		padding: 0.4em 0.2em;
+
+		&:has(input:checked) {
+			background-color: var(--main-clr);
+			color: #fff;
+
+			& svg {
+				fill: #fff;
+			}
+		}
+	}
+
+	& span {
+		font-size: 0.9em;
+
+		& atom-icon svg {
+			height: 1em;
+			vertical-align: middle;
+		}
+	}
+}
+
+domain-item,
+collection-calendar {
+	& details {
+		width: 100%;
+	}
+
+	& .domain {
+		padding: 0.3em;
+		background-color: var(--viewmode-bgc);
+		border-bottom: var(--border);
+
+		& img {
+			height: 1.2em;
+			vertical-align: middle;
+		}
+	}
+
+	& ul {
+		padding-left: 0.6em;
+		margin-bottom: 0.4em;
+	}
+
+	& li {
+		padding-block: 2px;
+		margin-block: 2px;
+	}
+
+	& span,
+	& li {
+		font-size: small;
+	}
+}
+
+collection-calendar summary {
+	padding: 0.3em;
+	background-color: light-dark(hsl(0, 0%, 100%), hsl(0, 0%, 20%));
+	border-bottom: var(--border);
+
+	& img {
+		height: 1.2em;
+		vertical-align: middle;
+	}
+}

@@ -1,0 +1,65 @@
+@scope (#translator) {
+	:scope {
+		width: 100%;
+		max-width: 98%;
+		display: flex;
+		column-gap: 0.6em;
+		position: relative;
+	}
+
+	:scope lang-input-box:first-child header {
+		flex-direction: row-reverse;
+	}
+
+	lang-input-box {
+		width: 49%;
+		border-radius: 0.5em;
+		box-shadow: var(--card);
+		background-color: light-dark(white, hsl(0, 0%, 18%));
+
+		& header {
+			padding: 0.4em;
+			display: flex;
+			border-radius: 0.5em 0.5em 0 0;
+			box-shadow: var(--card);
+			background-color: light-dark(whitesmoke, hsl(0, 0%, 25%));
+
+			& select {
+				border: none;
+				margin-inline: auto;
+			}
+
+			& svg {
+				height: 1.4em;
+				width: 1.4em;
+			}
+		}
+	}
+
+	textarea {
+		border: none;
+		background-color: inherit;
+		resize: none;
+		outline-offset: 2px;
+		field-sizing: content;
+		width: 100%;
+		min-height: 8lh;
+		max-height: 12lh;
+		scrollbar-width: thin;
+	}
+
+	atom-icon.speaking svg {
+		animation: beacon 500ms infinite alternate;
+		transform-origin: center;
+		fill: orange;
+	}
+}
+
+@keyframes beacon {
+	from {
+		scale: 1.1;
+	}
+	to {
+		scale: 0.9;
+	}
+}

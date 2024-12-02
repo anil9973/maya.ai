@@ -1,0 +1,114 @@
+domain-item ul,
+collection-calendar ul {
+	margin-block: 0;
+
+	& li {
+		list-style-type: none;
+	}
+}
+
+folder-tree {
+	--stem-clr: hsl(0, 0%, 70%);
+	width: max-content;
+	border-radius: 0 0 0.4em 0.4em;
+}
+
+svg {
+	height: 1.2em;
+	vertical-align: middle;
+	fill: var(--icon-clr);
+	cursor: pointer;
+}
+
+/* tree-view */
+folder-tree ul {
+	--pd-left: 2em;
+	--vrt-stem-left: 0.4em;
+	padding-left: var(--pd-left);
+	margin-block: 0;
+	position: relative;
+	isolation: isolate;
+	animation: nested-open 500ms ease-out forwards;
+
+	&::before {
+		content: " ";
+		position: absolute;
+		height: 100%;
+		width: 2px;
+		background-color: var(--stem-clr);
+		left: 0.4em;
+		top: -0.2em;
+	}
+
+	&:hover::before {
+		background-color: red;
+	}
+
+	& li {
+		list-style-type: none;
+		position: relative;
+
+		&::before {
+			content: " ";
+			position: absolute;
+			height: 2px;
+			width: calc(var(--pd-left) - var(--vrt-stem-left));
+			background-color: var(--stem-clr);
+			top: 0.8em;
+			left: calc(var(--vrt-stem-left) - var(--pd-left));
+			z-index: -1;
+		}
+
+		&:hover::before {
+			background-color: red;
+		}
+	}
+}
+
+folder-tree li > div {
+	cursor: pointer;
+	border-radius: 0.2em;
+
+	&.selected {
+		background-color: rgba(241, 82, 82, 0.7);
+	}
+
+	&:hover {
+		background-color: hsl(285, 72%, 89%);
+		color: black;
+	}
+
+	&:active {
+		outline: 1px dashed rgb(145, 7, 145);
+	}
+
+	& span {
+		font-size: 0.9rem;
+	}
+}
+
+@keyframes nested-open {
+	from {
+		scale: 0;
+	}
+
+	to {
+		scale: 1;
+	}
+}
+
+.action-btns {
+	margin-top: 0.5em;
+	display: flex;
+}
+
+button {
+	background-color: var(--main-clr);
+	color: #ffff;
+	border: none;
+	border-radius: 1em;
+	padding: 0.2em 0.5em;
+	margin-inline: auto;
+	margin-top: 0.4em;
+	cursor: pointer;
+}

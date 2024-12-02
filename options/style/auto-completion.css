@@ -1,0 +1,34 @@
+.auto-completion-block {
+	& header {
+		padding-block: 0.4em;
+		box-shadow: var(--card);
+
+		& h2 {
+			margin-block: 0;
+		}
+	}
+}
+
+auto-completion-dictionary {
+	display: grid;
+	grid-template-columns: repeat(2, 1fr);
+	gap: 1em;
+	padding: 0.5em;
+	border: var(--border);
+	border-top: none;
+	border-radius: 0 0 0.4em 0.4em;
+}
+
+text-card {
+	display: flex;
+	justify-content: space-between;
+	padding: 0.5em;
+	border-radius: 0.4em;
+	box-shadow: var(--card);
+	background-color: var(--block-bgc);
+
+	& span {
+		font-family: monospace;
+		flex-grow: 1;
+	}
+}

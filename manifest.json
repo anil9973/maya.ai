@@ -1,0 +1,83 @@
+{
+	"manifest_version": 3,
+	"minimum_chrome_version": "123",
+	"offline_enabled": true,
+	"default_locale": "en",
+	"name": "__MSG_extName__",
+	"short_name": "Maya",
+	"description": "__MSG_extDescription__",
+	"version": "0.0.1",
+	"author": "Brahmastra",
+	"icons": {
+		"128": "icon-128.png",
+		"16": "icon-24.png"
+	},
+
+	"action": {
+		"default_title": "Ask Maya (Alt+M)",
+		"default_popup": "popup/index.html"
+	},
+
+	"options_page": "options/index.html",
+
+	"side_panel": {
+		"default_path": "panel/chat/index.html"
+	},
+
+	"background": {
+		"service_worker": "background/background.js",
+		"type": "module"
+	},
+
+	"commands": {
+		"_execute_action": {
+			"suggested_key": {
+				"default": "Alt+M",
+				"windows": "Alt+M",
+				"mac": "Alt+M",
+				"linux": "Alt+M"
+			}
+		},
+
+		"selectTextAIPopup": {
+			"suggested_key": {
+				"default": "Alt+A"
+			},
+			"description": "Show select text AI popup"
+		},
+
+		"openCollections": {
+			"suggested_key": {
+				"default": "Alt+B"
+			},
+			"description": "Open collections tab"
+		}
+	},
+
+	"web_accessible_resources": [
+		{
+			"resources": [
+				"AI/*",
+				"scripts/*",
+				"collections/js/om.compact.js",
+				"collections/js/om.event.js",
+				"collections/js/reset.js",
+				"assets/languages.json",
+				"assets/matrix.svg",
+				"popup/js/constant.js",
+				"panel/summarizer/js/extractor.js"
+			],
+			"matches": ["<all_urls>"]
+		}
+	],
+
+	"permissions": ["activeTab", "contextMenus", "scripting", "sidePanel", "storage", "aiLanguageModelOriginTrial"],
+	"optional_permissions": ["bookmarks", "downloads", "tabs", "tabGroups"],
+	"optional_host_permissions": ["<all_urls>"],
+	"trial_tokens": [
+		"AiZjqtVx4REYfnHfzRo1L26IYA7AY4rMVQHXDNPfGTYRXMt8SHyXP13ULll/tBoSPJHGTyy9Moz8CTRPIMFQxQkAAABzeyJvcmlnaW4iOiJjaHJvbWUtZXh0ZW5zaW9uOi8vZW1lcGdsaW1qZ3Bma2tkaWRqY2RvY2xwbHBuZGFiYWUiLCJmZWF0dXJlIjoiQUlTdW1tYXJpemF0aW9uQVBJIiwiZXhwaXJ5IjoxNzUzMTQyNDAwfQ==",
+		"AoXo6R6aGjHhqOlQ8PIXaE2+Sv+H1cCkktWrqo6iAj/wQ5V0yhM/nU4wubK3zcGtOnJriQODNLh0qd5j65icGg4AAAB1eyJvcmlnaW4iOiJjaHJvbWUtZXh0ZW5zaW9uOi8vZW1lcGdsaW1qZ3Bma2tkaWRqY2RvY2xwbHBuZGFiYWUiLCJmZWF0dXJlIjoiTGFuZ3VhZ2VEZXRlY3Rpb25BUEkiLCJleHBpcnkiOjE3NDk1OTk5OTl9",
+		"AumhEkYrwjaBO3O2tS7wf5QDyeiSf8zf+wB0z9Vbo2ovugopyKjtU7cZ74TMRe0pyELqFQqjfqLQRgNHHQdRggYAAABveyJvcmlnaW4iOiJjaHJvbWUtZXh0ZW5zaW9uOi8vZW1lcGdsaW1qZ3Bma2tkaWRqY2RvY2xwbHBuZGFiYWUiLCJmZWF0dXJlIjoiVHJhbnNsYXRpb25BUEkiLCJleHBpcnkiOjE3NTMxNDI0MDB9",
+		"AlNkwgDDFhtf+mTrwDYaj4qo3Fw2xKEVYPGSwxxKZL9UmdEKPkHrBRtg+rTka3Mg70yahl2Xm9jLL71PhbypwgAAAAB4eyJvcmlnaW4iOiJjaHJvbWUtZXh0ZW5zaW9uOi8vZW1lcGdsaW1qZ3Bma2tkaWRqY2RvY2xwbHBuZGFiYWUiLCJmZWF0dXJlIjoiQUlQcm9tcHRBUElGb3JFeHRlbnNpb24iLCJleHBpcnkiOjE3NjA0ODYzOTl9"
+	]
+}

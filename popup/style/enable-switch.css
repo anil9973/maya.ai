@@ -1,0 +1,73 @@
+/* switch */
+.switch {
+	position: relative;
+	display: inline-block;
+	width: 60px;
+	height: 34px;
+
+	& input {
+		opacity: 0;
+
+		&:checked + .slider {
+			background-color: limegreen;
+		}
+
+		&:focus + .slider {
+			box-shadow: 0 0 1px limegreen;
+		}
+
+		&:checked + .slider:before {
+			translate: 26px;
+		}
+	}
+}
+
+.slider {
+	position: absolute;
+	cursor: pointer;
+	inset: 0;
+	background-color: #ccc;
+	transition: 0.4s;
+	border-radius: 34px;
+
+	&:before {
+		position: absolute;
+		content: "";
+		height: 26px;
+		width: 26px;
+		left: 4px;
+		bottom: 4px;
+		background-color: white;
+		transition: 0.4s;
+		border-radius: 50%;
+	}
+}
+
+#webpage-translator li,
+#welcome-config-dialog li {
+	list-style-type: none;
+	display: flex;
+	justify-content: space-between;
+	padding-block: 0.4em;
+
+	& span {
+		max-width: 26ch;
+	}
+}
+
+#welcome-config-dialog {
+	& input[name="toggle"] {
+		scale: 1.2;
+
+		& + span {
+			font-family: monospace;
+			vertical-align: middle;
+		}
+	}
+
+	& atom-icon[ico="close-circle"] {
+		position: absolute;
+		top: 0;
+		right: 0;
+	}
+}

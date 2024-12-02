@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Maya - Chrome built-in AI assistant</title>
+    <script type="module" src="/crx-hmr.js"></script>
+</head>
+
+<body>
+    <top-toolbar>
+        <div><span class="ext-name">Maya</span></div>
+        <atom-icon ico="collections" title="Open collections in new tab" id="openCollections"></atom-icon>
+        <a href="/options/index.html" target="_blank" rel="noopener noreferrer">
+            <atom-icon ico="settings" title="Go to settings"></atom-icon>
+        </a>
+    </top-toolbar>
+    <main>
+        <button style="--hue:300" id="chatWithPage">
+            <atom-icon ico="web" title=""></atom-icon>
+            <div>
+                <div id="chat_with_page">Chat with page</div>
+                <kbd>Alt+C</kbd>
+            </div>
+        </button>
+
+        <button style="--hue:120" id="summarizePage">
+            <atom-icon ico="summary" title=""></atom-icon>
+            <div>
+                <div id="summary">Summary</div>
+                <kbd>Alt+S</kbd>
+            </div>
+        </button>
+
+        <button style="--hue:210" id="translate">
+            <atom-icon ico="translator" title=""></atom-icon>
+            <div>
+                <div id="translate">Translate</div>
+                <select name="languages-list" id="languages_list"></select>
+            </div>
+        </button>
+
+        <button style="--hue:12;display: none;" id="compareProduct">
+            <atom-icon ico="product" title=""></atom-icon>
+            <div>
+                <div id="compare_product">Compare Product</div>
+            </div>
+        </button>
+
+        <button style="--hue:280" id="selectElem">
+            <atom-icon ico="select" title=""></atom-icon>
+            <div>
+                <div id="select_anything">Select anything</div>
+                <kbd>Alt+M</kbd>
+            </div>
+        </button>
+
+        <button style="--hue:33" id="capture_screenshot">
+            <atom-icon ico="screenshot" title=""></atom-icon>
+            <div>
+                <div id="screenshot">Screenshot</div>
+                <kbd>Alt+K</kbd>
+            </div>
+        </button>
+
+        <button style="--hue:340" id="recommendSites">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+                <title id="ai_recommended_websites">AI Recommended websites to this websites</title>
+                <path fill="currentColor"
+                    d="M18 20v-2h1v-7h-1V9h4v2h-1v7h1v2zm-3.5 0h2L13 9h-3L6.503 20h2l.601-2h4.778zm-4.794-4l1.628-5.411l.256-.003L13.264 16zm16.511 5l-1.787 3.621l-3.996.58l2.892 2.82L22.643 32l3.574-1.879L29.791 32l-.683-3.98L32 25.202l-3.996-.581z" />
+                <path fill="currentColor" d="M17 30H0V0h30v17h-2V2H2v26h15z" />
+            </svg>
+            <div>
+                <div id="recommended_sites">Recommended sites</div>
+                <kbd>Alt+R</kbd>
+            </div>
+        </button>
+    </main>
+
+    <output id="snackbar" hidden></output>
+    <script type="module" src="./js/popup.js"></script>
+    <style>
+        :scope {
+            color-scheme: light dark;
+            background-color: light-dark(white, black);
+        }
+    </style>
+</body>
+
+</html>

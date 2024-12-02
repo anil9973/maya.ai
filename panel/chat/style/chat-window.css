@@ -1,0 +1,76 @@
+chat-toolbar {
+	padding: 0.2em;
+	display: flex;
+	column-gap: 0.8em;
+	margin-inline: 1px;
+	border-radius: 0.5em 0.5em 0 0;
+	box-shadow: var(--card);
+	background-color: light-dark(whitesmoke, hsl(0, 0%, 25%));
+}
+
+message-container {
+	height: 90vh;
+	display: flex;
+	flex-direction: column;
+	row-gap: 0.5em;
+	padding-inline: 0.5em;
+	padding-top: 0.5em;
+}
+
+user-query,
+ai-prompt-response mark-writer-pad {
+	width: 84%;
+	min-height: 2lh;
+	max-height: 30lh;
+	border-radius: 0.4em;
+	box-shadow: var(--card);
+	background-color: light-dark(white, hsl(0, 0%, 20%));
+}
+
+ai-prompt-response {
+	&:hover atom-icon {
+		opacity: 1;
+	}
+}
+
+response-action-bar {
+	display: flex;
+	flex-direction: row-reverse;
+	column-gap: 0.4em;
+	margin-right: 16%;
+
+	& atom-icon {
+		opacity: 0;
+		transition: opacity 300ms ease-out;
+		transition-delay: 100ms;
+
+		& svg {
+			height: 1.1em;
+		}
+	}
+}
+
+user-query {
+	padding: 0.4em;
+	margin-left: auto;
+}
+
+mark-writer-pad {
+	display: block;
+	padding: 0.4em;
+	max-height: 28lh;
+	overflow-y: auto;
+	scrollbar-width: thin;
+
+	& ul,
+	& ol {
+		padding-left: 24px;
+	}
+
+	& a::after {
+		content: url(/assets/link-url.svg);
+		vertical-align: middle;
+		margin-inline: 2px 0.2em;
+		cursor: pointer;
+	}
+}

@@ -1,0 +1,93 @@
+fence-block,
+math-block {
+	margin-block: 0.4em;
+
+	&:has(block-marker) {
+		display: block;
+		background-color: black;
+		padding: 0.2em;
+	}
+
+	& block-marker + pre {
+		background-color: inherit;
+		font-size: inherit;
+		padding-block: 0.2em;
+	}
+
+	& pre {
+		margin-block: 0;
+		overflow-x: auto;
+		scrollbar-width: thin;
+	}
+}
+
+embed-content img {
+	max-width: 98%;
+	object-fit: fill;
+	box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
+	border-radius: 0.4em;
+}
+
+xml-comment,
+obsidian-comment {
+	& block-marker {
+		color: grey;
+		& + pre {
+			color: grey;
+		}
+	}
+}
+
+table-grid {
+	margin-left: 0.6em;
+	display: grid;
+	grid-template-areas:
+		"table  column-bar"
+		"row-bar null";
+
+	& table {
+		border-collapse: collapse;
+		grid-area: table;
+
+		& td,
+		& th {
+			border: var(--border);
+			height: 1.6lh;
+			padding: 0.3em 0.4em;
+		}
+	}
+
+	& .column-bar,
+	& .row-bar {
+		background-color: #ccc;
+		box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+		opacity: 0;
+
+		&::before {
+			content: url(/assets/plus.svg);
+		}
+
+		&:hover {
+			opacity: 1;
+		}
+	}
+
+	& .column-bar {
+		grid-area: column-bar;
+		width: 0.8em;
+		cursor: ew-resize;
+		position: relative;
+
+		&::before {
+			position: absolute;
+			top: 30%;
+		}
+	}
+
+	& .row-bar {
+		grid-area: row-bar;
+		height: 0.8em;
+		text-align: center;
+		cursor: ns-resize;
+	}
+}

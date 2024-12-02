@@ -1,0 +1,8 @@
+build
+crx-hmr.js
+maya_ai.zip
+.vscode
+.TODO
+build.sh
+jsconfig.json
+biome.json

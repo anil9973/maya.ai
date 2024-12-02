@@ -1,0 +1,41 @@
+main {
+	display: flex;
+	flex-direction: column;
+	row-gap: 1.5em;
+	padding: 0.8em;
+}
+
+main > button {
+	--hue: 33;
+	display: block;
+	padding: 0.5em 0.6em;
+	font-weight: bold;
+	font-size: 1rem;
+	text-align: center;
+	text-shadow: 0px 1px 0px hsla(0, 0%, 10%, 0.8);
+	box-shadow: inset 0 1px 0 hsl(var(--hue), 100%, 70%), 0 10px 0 hsl(var(--hue), 100%, 30%);
+	background-color: hsl(var(--hue), 100%, 55%);
+	border-radius: 0.4em;
+	border: none;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	padding-inline: 1.5em;
+	cursor: pointer;
+	position: relative;
+
+	&:hover {
+		background-color: hsl(var(--hue), 100%, 65%);
+	}
+
+	&:active {
+		top: 10px;
+		background-color: hsl(var(--hue), 100%, 45%);
+		box-shadow: inset 0 1px 0 hsl(var(--hue), 100%, 70%), inset 0 -3px 0 hsl(var(--hue), 100%, 30%);
+	}
+
+	svg {
+		height: 1.8em;
+		width: 1.8em;
+	}
+}

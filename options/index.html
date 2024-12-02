@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Maya.ai configurations, snippet manager</title>
+    <link rel="stylesheet" href="./style/base.css">
+    <link rel="stylesheet" href="./style/layout.css">
+    <link rel="stylesheet" href="./style/setting.css">
+    <link rel="stylesheet" href="./style/snippet.css">
+    <link rel="stylesheet" href="./style/snippet-editor.css">
+    <link rel="stylesheet" href="./style/auto-completion.css">
+    <script type="module" src="./js/options.js"></script>
+</head>
+
+<body>
+    <main>
+        <aside>
+            <nav>
+                <div class="nav-link"> <a href="#configuration" id="Configuration">Configuration</a> </div>
+                <div class="nav-link"> <a href="#snippetManager" id="">Manage Snippets</a> </div>
+                <div class="nav-link"> <a href="#autoCompletionTexts" id="">Completion Text</a> </div>
+                <details>
+                    <summary>Markdown</summary>
+                    <ul>
+                        <li> <a href="#markdown_formatting" id="formatting_syntax">Formatting syntax</a> </li>
+                        <li><a href="#emphasis_syntax" id="emphasis_text_syntax">Emphasis text syntax</a></li>
+                        <li><a href="#keyboard_shortcuts" id="keyboard_shortcuts0">Keyboard shortcuts</a></li>
+                    </ul>
+                </details>
+                <div class="nav-link"> <a href="/guide/welcome-guide.html" id="starter_guide">Starter guide</a> </div>
+                <div class="nav-link"> <a href="/guide/changelog.html" id="changelog">Changelog</a> </div>
+                <div class="nav-link"> <a href="https://noterail.co" target="_blank" id="more_extensions">More
+                        extensions</a> </div>
+                <div class="nav-link"> <a href="#contactus" id="contact_us">Contact us</a> </div>
+            </nav>
+        </aside>
+        <article>
+            <section>
+                <h2 id="configuration">🛠️ Configuration </h2>
+                <blockquote>
+                    <div class="config-item">
+                        <div class="setting-info">
+                            <h3><span id="autotranslate_web_pages">AutoTranslate web pages</span></h3>
+                            <div>
+                                <span id="auto_translate_web_page_to">Auto translate web page to</span>
+                                <select name="toLanguages" id="toLanguages"></select> <br>
+                                <span id="when_foreign_language_detect">When foreign language detect</span>
+                            </div>
+                        </div>
+
+                        <label class="switch">
+                            <input type="checkbox" id="toggle_auto_translate" />
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+
+                    <div class="config-item">
+                        <div>
+                            <h3>AI-Powered Automatic Tab Grouping</h3>
+                            <label hidden>
+                                <input type="checkbox" id="group_opened_tabs" />
+                                <span>Auto group opened tabs</span>
+                            </label>
+                        </div>
+                        <label class="switch">
+                            <input type="checkbox" id="toggle_tab_grouping" />
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+
+                    <div class="config-item">
+                        <div>
+                            <h3>AI-Driven Automatic Bookmark Categorization</h3>
+                            <label hidden>
+                                <input type="checkbox" id="include_webpage_thumbnail" />
+                                <span>Include webpage description & thumbnail
+                                    <span title="Read all websites permission required" style="cursor: help;">ℹ️</span>
+                                </span>
+                                <br>
+                                <input type="checkbox" id="categorize_existing_bookmark" />
+                                <span>Organize Existing Bookmarks</span>
+                            </label>
+                        </div>
+                        <label class="switch">
+                            <input type="checkbox" id="toggle_bookmark_categorizer" />
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+
+                    <div class="config-item">
+                        <div class="setting-info">
+                            <h3> <span id="">Show popup on text select</span></h3>
+                            <div>
+                                <span id="">Quick ai-actions popup show when text
+                                    select</span>
+                            </div>
+                            <div><span id="use_keyboard_shortcuts">Alternative: Use keyboard shortcuts</span>
+                                <kbd>Alt+A</kbd>
+                            </div>
+                        </div>
+
+                        <label class="switch">
+                            <input type="checkbox" id="toggle_select_ai_popup" />
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+
+                    <div class="config-item">
+                        <div>
+                            <h3>Compare product from open tabs</h3>
+                            <div>
+                                <span>Compare product from tab with previous/selected tab</span>
+                                <span title="Browser history permission required" style="cursor: help;">ℹ️</span>
+                            </div>
+                        </div>
+                        <label class="switch">
+                            <input type="checkbox" id="compareProduct" />
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+
+                    <div class="config-item">
+                        <div class="setting-info">
+                            <h3><span>Auto summarize webpage when tab switch</span></h3>
+                            <div>
+                                <span>When side panel is open and tab switch, maya auto summarize webpage of
+                                    activated tab.
+                                </span>
+                            </div>
+                        </div>
+
+                        <label class="switch">
+                            <input type="checkbox" id="auto_summarizer" />
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                </blockquote>
+            </section>
+
+            <section class="snippet-block">
+                <header>
+                    <snippet-category></snippet-category>
+                    <h2 id="snippetManager">Snippet manager</h2>
+                    <button id="addSnippet">Add snippet</button>
+                </header>
+                <snippet-container></snippet-container>
+            </section>
+
+            <section class="auto-completion-block">
+                <header>
+                    <h2 id="autoCompletionTexts">Auto completion text list</h2>
+                    <button id="addCompletionTextBtn">Add text</button>
+                </header>
+                <auto-completion-dictionary></auto-completion-dictionary>
+            </section>
+
+            <section>
+                <h2 id="markdown_formatting">Markdown formatting syntax</h2>
+                <table class="table table-bordered">
+                    <thead class="thead-light">
+                        <tr>
+                            <th>Element</th>
+                            <th>Markdown Syntax</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Heading</a></td>
+                            <td><code># H1<br>
+                    ## H2<br>
+                    ### H3</code></td>
+                        </tr>
+
+                        <tr>
+                            <td>Blockquote</a></td>
+                            <td><code>&gt; blockquote</code></td>
+                        </tr>
+                        <tr>
+                            <td>Ordered List</a></td>
+                            <td><code>
+                  1. First item<br>
+                  2. Second item<br>
+                  3. Third item<br>
+                </code></td>
+                        </tr>
+                        <tr>
+                            <td>Unordered List</a></td>
+                            <td>
+                                <code>
+                    - First item<br>
+                    - Second item<br>
+                    - Third item<br>
+                  </code>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Horizontal Rule</a></td>
+                            <td><code>---</code></td>
+                        </tr>
+                        <tr>
+                            <td>Link</a></td>
+                            <td><code>[title](https://www.example.com)</code></td>
+                        </tr>
+                        <tr>
+                            <td>Image</a></td>
+                            <td><code>![alt text](image.jpg)</code></td>
+                        </tr>
+
+                        <tr>
+                            <td>Table</a></td>
+                            <td> use keyboard shortcut(coming soon) </td>
+                        </tr>
+                        <tr>
+                            <td>Fenced Code Block</a></td>
+                            <td>
+                                <code>```<br>
+                                {<br>
+                                &nbsp;&nbsp;"firstName": "John",<br>
+                                &nbsp;&nbsp;"lastName": "Smith",<br>
+                                &nbsp;&nbsp;"age": 25<br>
+                                }<br>
+                                ```
+                                </code>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Footnote</a></td>
+                            <td><code>
+                    Here's a sentence with a footnote. [^1]<br><br>
+                    [^1]: This is the footnote.
+                  </code></td>
+                        </tr>
+
+                        <tr>
+                            <td>Definition List</a></td>
+                            <td><code>
+                    term<br>
+                    : definition
+                  </code></td>
+                        </tr>
+
+                        <tr>
+                            <td>Task List</a></td>
+                            <td><code>
+                    - [x] Write the press release<br>
+                    - [ ] Update the website<br>
+                    - [ ] Contact the media
+                  </code></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+
+            <section>
+                <h2 id="emphasis_syntax">Emphasis text syntax</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Style</th>
+                            <th>Syntax</th>
+                            <th>Example</th>
+                            <th>Output</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Bold</td>
+                            <td><code>** **</code> or <code>__ __</code></td>
+                            <td><code>**Bold text**</code></td>
+                            <td><strong>Bold text</strong></td>
+                        </tr>
+                        <tr>
+                            <td>Italic</td>
+                            <td><code>* *</code> or <code>_ _</code></td>
+                            <td><code>*Italic text*</code></td>
+                            <td><em>Italic text</em></td>
+                        </tr>
+                        <tr>
+                            <td>Strikethrough</td>
+                            <td><code>~~ ~~</code></td>
+                            <td><code>~~Striked out text~~</code></td>
+                            <td><del>Striked out text</del></td>
+                        </tr>
+                        <tr>
+                            <td>Highlight</td>
+                            <td><code>== ==</code></td>
+                            <td><code>==Highlighted text==</code></td>
+                            <td><mark>Highlighted text</mark></td>
+                        </tr>
+                        <tr>
+                            <td>Bold and nested italic</td>
+                            <td><code>** **</code> and <code>_ _</code></td>
+                            <td><code>**Bold text and _nested italic_ text**</code></td>
+                            <td><strong>Bold text and <em>nested italic</em> text</strong></td>
+                        </tr>
+                        <tr>
+                            <td>Bold and italic</td>
+                            <td><code>*** ***</code> or <code>___ ___</code></td>
+                            <td><code>***Bold and italic text***</code></td>
+                            <td><strong><em>Bold and italic text</em></strong></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+
+            <section>
+                <h2 id="keyboard_shortcuts">Keyboard shortcuts</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Style</th>
+                            <th>Shortcut</th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Bold</td>
+                            <td><kbd>Ctrl+B</kbd></td>
+                        </tr>
+                        <tr>
+                            <td>Italic</td>
+                            <td><kbd>Ctrl+I</kbd></td>
+                        </tr>
+                        <tr>
+                            <td>Underline</td>
+                            <td><kbd>Ctrl+U</kbd></td>
+                        </tr>
+
+                        <tr>
+                            <td>Insert Bookmark</td>
+                            <td><kbd>Alt + B</kbd></td>
+                        </tr>
+                        <tr>
+                            <td>Insert Screenshot</td>
+                            <td><kbd>Alt + S</kbd></td>
+                        </tr>
+                        <tr>
+                            <td>Insert Table</td>
+                            <td><kbd>Alt + T</kbd></td>
+                        </tr>
+                        <tr>
+                            <td>Comment line</td>
+                            <td><kbd>Alt + /</kbd></td>
+                        </tr>
+
+
+                    </tbody>
+                </table>
+            </section>
+
+            <section>
+                <h2 id="text_editing_command">Text Editing command</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Action</th>
+                            <th>Shortcut</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Insert new line</td>
+                            <td><kbd>Enter</kbd></td>
+                        </tr>
+                        <tr>
+                            <td>Delete the previous character</td>
+                            <td><kbd>Backspace</kbd></td>
+                        </tr>
+                        <tr>
+                            <td>Delete the next character</td>
+                            <td><kbd>Delete</kbd></td>
+                        </tr>
+                        <tr>
+                            <td>Delete the previous word</td>
+                            <td><kbd>Ctrl + Backspace</kbd></td>
+                        </tr>
+                        <tr>
+                            <td>Delete the next word</td>
+                            <td><kbd>Ctrl + Delete</kbd></td>
+                        </tr>
+                        <tr>
+                            <td>Delete inside word</td>
+                            <td><kbd>Alt + Backspace</kbd></td>
+                        </tr>
+                        <tr>
+                            <td>Delete the current line</td>
+                            <td><kbd>Alt + Delete</kbd></td>
+                        </tr>
+                        <tr>
+                            <td>Move line Up</td>
+                            <td><kbd>Alt + ⬆</kbd></td>
+                        </tr>
+                        <tr>
+                            <td>Move line down</td>
+                            <td><kbd>Alt + ⬇</kbd></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+
+            <section>
+                <h2 id="contactus">Contact us</h2>
+                <blockquote class="contact-form">
+                    <label>
+                        <div>Email</div>
+                        <input type="email" name="email" id="email" placeholder="emailadress@mail.com">
+                    </label>
+                    <label>
+                        <div>Subject</div>
+                        <input type="subject" name="subject" id="subject">
+                    </label>
+
+                    <label>
+                        <div>Message body</div>
+                        <textarea name="body" id="mailbody" rows="5"></textarea>
+                    </label>
+                    <div id="send-mail-buttons">
+                        <span>Send via: </span>
+                        <button style="--btn-clr:blueviolet">Send</button>
+                        <button id="osmail">OS Mail</button>
+                        <button id="gmail" style="--btn-clr:red">GMail</button>
+                    </div>
+                </blockquote>
+            </section>
+        </article>
+    </main>
+
+    <output id="snackbar" hidden></output>
+    <script type="module" src="./js/options.js"></script>
+</body>
+
+</html>

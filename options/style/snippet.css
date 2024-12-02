@@ -1,0 +1,139 @@
+.snippet-block {
+	& header {
+		padding-block: 0.4em;
+		box-shadow: var(--card);
+
+		& h2 {
+			margin-block: 0;
+		}
+	}
+}
+
+snippet-container {
+	display: grid;
+	grid-template-columns: repeat(2, 1fr);
+	gap: 1em;
+	padding: 0.5em;
+	border: var(--border);
+	border-top: none;
+	border-radius: 0 0 0.4em 0.4em;
+}
+
+@scope (snippet-category) {
+	:scope {
+		display: inline-block;
+		border-radius: 0.4em;
+
+		&:focus-within menu {
+			scale: 1 1;
+		}
+	}
+
+	input[type="button"] {
+		padding-right: 1.5em;
+
+		& + atom-icon {
+			margin-left: -1.5em;
+		}
+	}
+
+	menu {
+		position: absolute;
+		z-index: 1;
+		padding: 0;
+		margin-block: 0;
+		background-color: light-dark(white, hsl(0, 0%, 15%));
+		transform-origin: top;
+		scale: 1 0;
+		transition: scale 200ms ease-out;
+
+		& li {
+			list-style-type: none;
+			font-size: 0.9rem;
+			padding: 0.2em 0.4em;
+			cursor: pointer;
+
+			&:hover {
+				background-color: light-dark(whitesmoke, hsl(0, 0%, 20%));
+
+				& svg {
+					opacity: 1;
+				}
+			}
+
+			&[selected] {
+				font-weight: bold;
+				background-color: rgb(116, 0, 151);
+			}
+
+			& svg {
+				height: 1.1em;
+				opacity: 0;
+				transition: opacity 200ms ease-out;
+			}
+		}
+	}
+}
+
+@scope (snippet-card) {
+	:scope {
+		display: flex;
+		justify-content: space-between;
+		column-gap: 0.5em;
+		padding: 0.4em;
+		border-radius: 0.4em;
+		box-shadow: var(--card);
+		background-color: var(--block-bgc);
+	}
+
+	&:hover atom-icon {
+		opacity: 1;
+	}
+
+	&:scope[hidden] {
+		display: none;
+	}
+
+	.column {
+		display: flex;
+		flex-direction: column;
+		row-gap: 0.5em;
+		position: relative;
+	}
+
+	.title {
+		font-weight: bold;
+		font-size: 1.2rem;
+	}
+
+	.prompt {
+		line-clamp: 2;
+		font-family: monospace;
+		font-size: 0.9rem;
+	}
+
+	.description {
+		line-clamp: 2;
+		font-size: small;
+		color: light-dark(hwb(0 0% 90%), whitesmoke);
+	}
+
+	kbd {
+		position: absolute;
+		right: 0;
+		padding: 0.2em 0.4em;
+		border-radius: 0.8em;
+		box-shadow: var(--card);
+		background-color: light-dark(whitesmoke, hsl(0, 0%, 25%));
+
+		&:empty {
+			display: none;
+		}
+	}
+
+	& atom-icon {
+		opacity: 0;
+		transition: opacity 300ms ease-out;
+		transition-delay: 100ms;
+	}
+}

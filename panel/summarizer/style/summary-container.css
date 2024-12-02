@@ -1,0 +1,66 @@
+summary-container {
+	display: flex;
+	overflow-x: auto;
+	scrollbar-width: none;
+	scroll-behavior: smooth;
+
+	& summary-box {
+		width: 100vw;
+		flex-shrink: 0;
+	}
+}
+
+summary-box {
+	display: block;
+	min-height: 96%;
+	box-shadow: var(--card);
+	background-color: light-dark(white, hsl(0, 0%, 18%));
+
+	& action-bar {
+		display: flex;
+		column-gap: 0.4em;
+		background-color: light-dark(whitesmoke, black);
+		position: relative;
+
+		& svg {
+			height: 1.2em;
+		}
+
+		& atom-icon[ico="read-aloud"] {
+			margin-left: auto;
+		}
+
+		& textarea {
+			position: absolute;
+			field-sizing: content;
+			border: none;
+			min-height: 1lh;
+			width: 77%;
+			padding: 0.2em 0.2em;
+			background-color: inherit;
+			box-shadow: var(--card);
+		}
+	}
+
+	& mark-writer-pad {
+		display: block;
+		height: 92.5vh;
+		padding: 0.2em;
+
+		&:empty {
+			background-image: url(/assets/matrix.svg);
+		}
+
+		& ul,
+		& ol {
+			padding-left: 24px;
+		}
+
+		& a::after {
+			content: url(/assets/link-url.svg);
+			vertical-align: middle;
+			margin-inline: 2px 0.2em;
+			cursor: pointer;
+		}
+	}
+}

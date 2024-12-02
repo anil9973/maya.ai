@@ -1,0 +1,40 @@
+* {
+	box-sizing: border-box;
+}
+
+svg {
+	height: 1.5em;
+	vertical-align: middle;
+	fill: var(--icon-clr);
+	cursor: pointer;
+}
+
+:host {
+	border-bottom: var(--border);
+	padding: 0.5em 1em;
+	display: flex;
+	column-gap: 2em;
+	align-items: center;
+	justify-content: center;
+}
+
+search {
+	flex-basis: 50%;
+	box-shadow: var(--card);
+	border-radius: 0.8em;
+	background-color: light-dark(hsl(0, 0%, 100%), hsl(0, 0%, 24%));
+	display: inline-flex;
+	align-items: center;
+	padding-inline: 0.5em;
+
+	& input {
+		border: none;
+		padding: 0.6em;
+		width: 100%;
+		border-radius: 0.8em;
+		outline: none;
+		font-family: inherit;
+		font-size: inherit;
+		background-color: inherit;
+	}
+}

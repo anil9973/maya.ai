@@ -1,0 +1,147 @@
+@scope (block-labels) {
+	:scope {
+		display: flex;
+		margin-bottom: 0.2em;
+		padding-left: 0.4em;
+	}
+
+	.label-list {
+		margin: 0;
+		padding-left: 0;
+		line-clamp: 2;
+
+		& li {
+			--hue: 0;
+			display: inline-block;
+			border-radius: 0.4em;
+			font-size: min(0.55rem + 1vw, 0.9rem);
+			background-color: hsl(var(--hue), 100%, 84%);
+			color: hsl(var(--hue), 100%, 30%);
+			border: 1px solid hsl(var(--hue), 100%, 40%);
+			padding-inline: min(1vw, 0.3rem);
+			margin-right: 4px;
+			vertical-align: super;
+			white-space: nowrap;
+
+			&:has(span:empty) {
+				display: none;
+			}
+		}
+	}
+
+	div.add-label {
+		position: relative;
+
+		&:focus-within > label-picker {
+			display: block;
+		}
+	}
+
+	label-picker {
+		position: absolute;
+		z-index: 2;
+		width: max-content;
+		max-width: 60vw;
+		background-color: var(--popup-bgc);
+		box-shadow: var(--card);
+		border-radius: 0.2em;
+		text-align: center;
+		padding: 0.4em;
+		display: none;
+
+		& > div {
+			& color-selector {
+				margin-right: -0.5em;
+			}
+
+			& input {
+				width: 12ch;
+				padding-left: 0.7em;
+			}
+		}
+
+		& ul {
+			padding-left: 0;
+			font-size: 0.9rem;
+			margin-block: 0.5em;
+			display: flex;
+			flex-wrap: wrap;
+			gap: 0.4em;
+
+			& li {
+				display: inline-block;
+				border: 1px solid hsl(var(--h), 100%, 50%);
+				color: hsl(var(--h), 100%, 50%);
+				padding-inline: 0.2em;
+				border-radius: 0.3em;
+				margin-left: 0.3em;
+				cursor: pointer;
+			}
+		}
+	}
+}
+
+color-selector {
+	display: inline-block;
+	position: relative;
+
+	& span {
+		--h: 300;
+		display: inline-block;
+		width: 1lh;
+		aspect-ratio: 1;
+		border: var(--border);
+		border-radius: 0.2em;
+		background-color: hsl(var(--h), 100%, 70%);
+		vertical-align: middle;
+		cursor: pointer;
+
+		&:focus + div {
+			display: block;
+		}
+	}
+
+	& div {
+		width: 8.5em;
+		position: absolute;
+		border-radius: 0.2em;
+		padding: 0.2em 0;
+		box-shadow: var(--card);
+		background-color: var(--popup-bgc);
+		display: none;
+
+		& var {
+			--h: 0;
+			border: 1px solid #ccc;
+			display: inline-block;
+			margin: 0.15em;
+			width: 1.55ch;
+			aspect-ratio: 1;
+			background-color: hsl(var(--h), 100%, 50%);
+			cursor: pointer;
+		}
+	}
+}
+
+.label-list li,
+label-picker li {
+	&:hover note-icon {
+		opacity: 1;
+	}
+
+	& note-icon {
+		opacity: 0;
+		transition: opacity 200ms ease-out, scale 200ms ease-out;
+
+		&:hover svg {
+			scale: 1;
+		}
+
+		& svg {
+			fill: black;
+			height: 1.2em;
+			scale: 0.8;
+			transition: scale 200ms ease-out;
+		}
+	}
+}

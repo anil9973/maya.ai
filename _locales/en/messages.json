@@ -1,0 +1,470 @@
+{
+	"extName": {
+		"message": "Maya - Chrome built-in AI assistant",
+		"description": "Extension name"
+	},
+
+	"extDescription": {
+		"message": "AI-powered auto tab grouping, bookmark & content organizer. Summarize or chat with webpages, PDFs, YouTube. Quick AI actions.",
+		"description": "Extension description"
+	},
+
+	"date": {
+		"message": "Date",
+		"description": "Date"
+	},
+
+	"domain": {
+		"message": "Domain",
+		"description": "Domain"
+	},
+
+	"folder": {
+		"message": "Folder",
+		"description": "Folder"
+	},
+
+	"capture": {
+		"message": "Capture",
+		"description": "Capture"
+	},
+
+	"translator_not_available": {
+		"message": "Translator not available",
+		"description": "Translator not available"
+	},
+
+	"source_and_target_lang_identical": {
+		"message": "Source and target language are identical",
+		"description": "Source and target language are identical"
+	},
+
+	"download": {
+		"message": "Download",
+		"description": "Download"
+	},
+
+	"replace": {
+		"message": "Replace",
+		"description": "Replace"
+	},
+
+	"copy": {
+		"message": "Copy",
+		"description": "Copy"
+	},
+
+	"close": {
+		"message": "Close",
+		"description": "Close"
+	},
+
+	"message_copied": {
+		"message": "Message copied",
+		"description": "message_copied"
+	},
+
+	"more_actions": {
+		"message": "More actions",
+		"description": "More actions"
+	},
+
+	"toggle_pin": {
+		"message": "Toggle pin",
+		"description": "Toggle pin"
+	},
+
+	"save_as_png": {
+		"message": "Save as PNG",
+		"description": "Save as PNG"
+	},
+
+	"extract_text_from_images": {
+		"message": "Extract text from images",
+		"description": "Extract text from images"
+	},
+
+	"identify_object": {
+		"message": "Identify object",
+		"description": "Identify object"
+	},
+
+	"edit_image": {
+		"message": "Edit image",
+		"description": "Edit image"
+	},
+
+	"custom_instruction": {
+		"message": "Custom instruction",
+		"description": "Custom instruction"
+	},
+
+	"improve": {
+		"message": "Improve",
+		"description": "Improve"
+	},
+
+	"translate": {
+		"message": "Translate",
+		"description": "Translate"
+	},
+
+	"fix_grammar": {
+		"message": "Fix grammar",
+		"description": "Fix grammar"
+	},
+
+	"make_shorter": {
+		"message": "Make Shorter",
+		"description": "Make Shorter"
+	},
+
+	"simplify": {
+		"message": "Simplify",
+		"description": "Simplify"
+	},
+
+	"make_longer": {
+		"message": "Make Longer",
+		"description": "Make Longer"
+	},
+
+	"finish_writing": {
+		"message": "Finish writing",
+		"description": "Finish writing"
+	},
+
+	"ask_maya": {
+		"message": "Ask Maya",
+		"description": "Ask Maya"
+	},
+
+	"read_aloud": {
+		"message": "Read aloud",
+		"description": "Read aloud"
+	},
+
+	"explain": {
+		"message": "Explain",
+		"description": "Explain"
+	},
+
+	"summarize": {
+		"message": "Summarize",
+		"description": "Summarize"
+	},
+
+	"extract_data": {
+		"message": "Extract data",
+		"description": "Extract data"
+	},
+
+	"answer_this_question": {
+		"message": "Answer this question",
+		"description": "Answer this question"
+	},
+
+	"visualize_data": {
+		"message": "Visualize data",
+		"description": "Visualize data"
+	},
+
+	"send_instruction": {
+		"message": "Send instruction to Maya AI",
+		"description": "Send instruction to Maya AI"
+	},
+
+	"prompt_api_not_available": {
+		"message": "Prompt API not available",
+		"description": "prompt api not available"
+	},
+
+	"prompt_api_downloading_in_progress": {
+		"message": "Prompt api downloading in progress",
+		"description": "Prompt api downloading in progress"
+	},
+
+	"chat_with_page": {
+		"message": "Chat with page",
+		"description": "Chat with page"
+	},
+
+	"summary": {
+		"message": "Summary",
+		"description": "Summary"
+	},
+
+	"compare_tab": {
+		"message": "Compare Tab",
+		"description": "Compare Tab"
+	},
+
+	"select_anything": {
+		"message": "Select anything",
+		"description": "Select anything"
+	},
+
+	"capture_screenshot": {
+		"message": "Screenshot",
+		"description": "Screenshot"
+	},
+
+	"ai_recommended_websites": {
+		"message": "AI Recommended websites to this websites",
+		"description": "AI Recommended websites to this websites"
+	},
+
+	"recommended_sites": {
+		"message": "Recommended sites",
+		"description": "Recommended sites"
+	},
+
+	"welcome_to_maya_ai": {
+		"message": "Welcome to Maya AI",
+		"description": "Welcome to Maya AI"
+	},
+
+	"automatic_tab_grouping": {
+		"message": "AI-Powered Automatic Tab Grouping",
+		"description": "AI-Powered Automatic Tab Grouping"
+	},
+
+	"auto_group_opened_tabs": {
+		"message": "Auto group opened tabs",
+		"description": "Auto group opened tabs"
+	},
+
+	"automatic_bookmark_categorization": {
+		"message": "AI-Driven Automatic Bookmark Categorization",
+		"description": "AI-Driven Automatic Bookmark Categorization"
+	},
+
+	"organize_existing_bookmarks": {
+		"message": "Organize Existing Bookmarks",
+		"description": "Organize Existing Bookmarks"
+	},
+
+	"auto_translate": {
+		"message": "Auto translate",
+		"description": "Auto translate"
+	},
+
+	"auto_translate_this_domain": {
+		"message": "Auto translate this domain",
+		"description": "Auto translate this domain"
+	},
+
+	"auto_translate_webpages": {
+		"message": "Auto translate webpages and webpage sections when foreign languages are detected",
+		"description": "Auto translate webpages and webpage sections when foreign languages are detected"
+	},
+
+	"upload_file": {
+		"message": "Upload File",
+		"description": "Upload File"
+	},
+
+	"screenshot": {
+		"message": "Screenshot",
+		"description": "Screenshot"
+	},
+
+	"prompt_messenger_downloading": {
+		"message": "Prompt messenger downloading in progress",
+		"description": "Prompt messenger downloading in progress"
+	},
+
+	"enter_category_name": {
+		"message": "Enter Category Name",
+		"description": "Enter Category Name"
+	},
+
+	"add_category": {
+		"message": "Add category",
+		"description": "Add category"
+	},
+
+	"Configuration": {
+		"message": "Configuration",
+		"description": "Configuration"
+	},
+
+	"configuration": {
+		"message": "🛠️ Configuration",
+		"description": "Configuration"
+	},
+
+	"markdown_formatting": {
+		"message": "Markdown formatting syntax",
+		"description": "Markdown formatting syntax"
+	},
+
+	"keyboard_shortcuts": {
+		"message": "Keyboard shortcuts",
+		"description": "Keyboard shortcuts"
+	},
+
+	"keyboard_shortcuts0": {
+		"message": "Keyboard shortcuts",
+		"description": "Keyboard shortcuts"
+	},
+
+	"starter_guide": {
+		"message": "Starter guide",
+		"description": "Starter guide"
+	},
+
+	"changelog": {
+		"message": "Changelog",
+		"description": "Changelog"
+	},
+
+	"more_extensions": {
+		"message": "More extensions",
+		"description": "More extensions"
+	},
+
+	"untitled_collection": {
+		"message": "Untitled collection",
+		"description": "Untitled collection"
+	},
+
+	"enable_file_access_api": {
+		"message": "Enable file access api",
+		"description": "Enable file access api"
+	},
+
+	"rewrite_instruction": {
+		"message": "Rewrite instruction",
+		"description": "Rewrite instruction"
+	},
+
+	"insert": {
+		"message": "Insert",
+		"description": "Insert"
+	},
+
+	"summary_api_not_available": {
+		"message": "Summary API not available",
+		"description": "Summary API not available"
+	},
+
+	"summarizer_downloading_in_progress": {
+		"message": "Summarizer downloading in progress",
+		"description": "Summarizer downloading in progress"
+	},
+
+	"ai_action_on_selected_text": {
+		"message": "AI action on selected text",
+		"description": "AI action on selected text"
+	},
+
+	"ai_action_on_selected_image": {
+		"message": "AI action on selected image",
+		"description": "AI action on selected image"
+	},
+
+	"open_collections": {
+		"message": "Open Collections",
+		"description": "Open Collections"
+	},
+
+	"downloading": {
+		"message": "Downloading...",
+		"description": "Downloading"
+	},
+
+	"permission_denied": {
+		"message": "🚫 Permission denied",
+		"description": "Permission denied"
+	},
+
+	"undo": {
+		"message": "Undo",
+		"description": "Undo"
+	},
+
+	"open_collections_in_new_tab": {
+		"message": "Open collections in new tab",
+		"description": "Open collections in new tab"
+	},
+
+	"item_deleted": {
+		"message": "Item deleted",
+		"description": "item_deleted"
+	},
+
+	"contact_us": {
+		"message": "Contact us",
+		"description": "contact_us"
+	},
+	"formatting_syntax": {
+		"message": "Formatting syntax",
+		"description": "Formatting syntax"
+	},
+
+	"text_editing_command": {
+		"message": "Text Editing command",
+		"description": "Text Editing command"
+	},
+
+	"compare_product": {
+		"message": "Compare Product",
+		"description": "compare_product"
+	},
+
+	"category": {
+		"message": "Category",
+		"description": "Category"
+	},
+
+	"keyboard_shortcut": {
+		"message": "keyboard shortcut",
+		"description": "keyboard shortcut"
+	},
+
+	"title": {
+		"message": "Title",
+		"description": "Title"
+	},
+
+	"description": {
+		"message": "Description",
+		"description": "Description"
+	},
+
+	"prompt_message": {
+		"message": "Prompt message",
+		"description": "Prompt message"
+	},
+
+	"run_commands_after_ai_model_responsed": {
+		"message": "Run commands after AI model responsed",
+		"description": "Run commands after AI model responsed"
+	},
+
+	"create_snippet": {
+		"message": "Create snippet",
+		"description": "Create snippet"
+	},
+
+	"shortcut_key_already_assigned": {
+		"message": "Shortcut key already assigned with another snippet",
+		"description": "Shortcut key already assigned with another snippet"
+	},
+
+	"snippet_created": {
+		"message": "Snippet created",
+		"description": "Snippet created"
+	},
+
+	"edit_snippet": {
+		"message": "Edit snippet",
+		"description": "Edit snippet"
+	},
+
+	"delete_snippet": {
+		"message": "Delete snippet",
+		"description": "Delete snippet"
+	}
+}
