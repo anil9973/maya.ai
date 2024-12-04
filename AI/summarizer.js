@@ -1,5 +1,6 @@
 import { NOT_AVAILABLE, setSync, getSync } from "../popup/js/constant.js";
 import { AISummaryType } from "./enums.js";
+import { generateContentOnGeminiServer } from "./Gemini-api.js";
 import { parseMarkDomStream } from "./writer.js";
 
 export class Summarizer {
@@ -42,6 +43,10 @@ export class Summarizer {
 			return parseMarkDomStream(readStream, writerHTMLElem);
 		} catch (error) {
 			console.error(error);
+			if (error.code === 9 || error.cause?.code === 9) {
+				const text = await generateContentOnGeminiServer(`Summarize following contents:\n${inputText}`);
+				text && writerHTMLElem.appendChild(new Text(text));
+			} else if (error.cause?.code !== 20) throw new Error(i18n("prompt_response_error"), { cause: error });
 		}
 	}
 

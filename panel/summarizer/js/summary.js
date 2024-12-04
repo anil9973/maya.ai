@@ -12,16 +12,19 @@ chrome.windows.getCurrent({ windowTypes: ["normal"] }).then((win) => (globalThis
 
 function onTabSwitch({ tabId, windowId }) {
 	if (windowId !== globalThis.windowId) return;
-	const tabNoteContainer = document.getElementById(tabId);
-	if (tabNoteContainer) return tabNoteContainer.scrollIntoView();
-	const crtTabNoteContainer = new TabpageSummary();
+	const tabSummaryContainer = document.getElementById(tabId);
+	if (tabSummaryContainer) return tabSummaryContainer.scrollIntoView();
+	const crtTabSummaryContainer = new TabpageSummary(tabId);
 
-	$("main", document.body).appendChild(crtTabNoteContainer);
-	crtTabNoteContainer.scrollIntoView();
+	$("main", document.body).appendChild(crtTabSummaryContainer);
+	crtTabSummaryContainer.scrollIntoView();
 }
 
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
-	request === "summarize" && crtTabId().then((tabId) => onTabSwitch({ tabId, windowId: globalThis.windowId }));
+	if (request === "summarizer") {
+		crtTabId().then((tabId) => onTabSwitch({ tabId, windowId: globalThis.windowId }));
+		sendResponse("Summarizing...");
+	}
 });
 
 getStore("autoSummarizeOnTabSwitch").then(({ autoSummarizeOnTabSwitch: autoSummarize }) => {

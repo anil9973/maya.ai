@@ -72,8 +72,8 @@ export class AiWriter {
 					const prompts = [{ role: "user", content: this.writer.sharedContext }];
 					await this.promptWriter.createPromptSession("Text Writer", prompts);
 				}
-				this.promptWriter.promptTextMsgStream(message, null, null, writerHTMLElem);
-			} else throw new Error("Failed to write content", { cause: error });
+				this.promptWriter.promptTextMsgStream(message, "Text writer", null, writerHTMLElem);
+			} else if (error.code !== 20) throw new Error("Failed to write content", { cause: error });
 		}
 	}
 

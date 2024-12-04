@@ -74,9 +74,11 @@ export class ResponseActionBar extends HTMLElement {
 		const fileBlob = new Blob([mdTxtContent], { type: "text/markdown" });
 		const filename = tab.title.replaceAll(" ", "-").replaceAll(escapeRx, "").slice(0, 100) + ".md";
 		const a = document.createElement("a");
-		a.setAttribute("href", URL.createObjectURL(fileBlob));
+		const blobUrl = URL.createObjectURL(fileBlob);
+		a.setAttribute("href", blobUrl);
 		a.setAttribute("download", filename);
 		a.click();
+		setTimeout(() => URL.revokeObjectURL(blobUrl), 1000);
 	}
 
 	readAloud() {

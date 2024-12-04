@@ -1,12 +1,12 @@
-import { MessageContainer } from "./message-container.js";
-import { PromptContainer } from "./prompt/prompt-container.js";
 import { PromptMessenger } from "../../../../AI/prompt-message.js";
+import { PromptContainer } from "./prompt/prompt-container.js";
+import { MessageContainer } from "./message-container.js";
 // @ts-ignore
 import chatWindowCss from "../../style/chat-window.css" with { type: "css" };
 import promptCss from "../../style/prompt-input.css" with { type: "css" };
 document.adoptedStyleSheets.push(chatWindowCss, promptCss);
 
-export class ChatWindow extends HTMLElement {
+export class OpenChatContainer extends HTMLElement {
 	constructor() {
 		super();
 	}
@@ -23,4 +23,4 @@ export class ChatWindow extends HTMLElement {
 	}
 }
 
-customElements.define("chat-window", ChatWindow);
+customElements.define("open-chat-container", OpenChatContainer);

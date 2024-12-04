@@ -1,6 +1,6 @@
 /*
-	Only call Gemini server If built-in failed to perform its JOB.
-	Prototype only, I will move this code to server-side on production
+	Only call the Gemini server if the built-in AI fails to perform its task.
+	This is a prototype; the code will be moved to the server-side in production.
  */
 //Embed API_KEY -> billing not enabled
 const API_KEY = "AIzaSyAUICbTZvrf3jVTr9nP0zXHQCedlXFCs30";

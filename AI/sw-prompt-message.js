@@ -29,7 +29,7 @@ export class SwPromptMessenger {
 			console.error(error);
 			if (error.code === 9) {
 				return await generateContentOnGeminiServer(message);
-			} else throw new Error("Failed to response prompt message", { cause: error });
+			} else throw new Error(i18n("prompt_response_error"), { cause: error });
 		}
 	}
 

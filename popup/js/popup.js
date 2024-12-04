@@ -13,6 +13,7 @@ setLang("chat_with_page");
 setLang("summary");
 setLang("compare_product");
 setLang("select_anything");
+setLang("translate_webpage");
 setLang("screenshot");
 setLang("ai_recommended_websites");
 setLang("recommended_sites");
@@ -97,4 +98,4 @@ async function checkproductTab() {
 	const isProductTab = await chrome.runtime.sendMessage({ msg: "checkProductTab" });
 	if (isProductTab.includes("true")) compareProductBtn.style.display = "flex";
 }
-setTimeout(checkproductTab, 1000);
+getStore("compareProductOn").then(({ compareProductOn }) => compareProductOn && setTimeout(checkproductTab, 1000));

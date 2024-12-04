@@ -18,7 +18,11 @@ const storeData = await getStore(keys);
 
 const autoSummarizerSwitch = eId("auto_summarizer");
 autoSummarizerSwitch.checked = storeData.autoSummarizeOnTabSwitch;
-$on(autoSummarizerSwitch, "change", ({ target }) => setStore({ autoSummarizeOnTabSwitch: target.checked }));
+$on(autoSummarizerSwitch, "change", async ({ target }) => {
+	const granted = await chrome.permissions.request({ origins: ["<all_urls>"] });
+	if (!granted) return;
+	setStore({ autoSummarizeOnTabSwitch: target.checked });
+});
 
 //Auto Translate config
 const languageSelectElem = eId("toLanguages");
@@ -37,13 +41,13 @@ autoTranslateSwitch.checked = storeData.autoTranslateOn;
 $on(autoTranslateSwitch, "change", onAutoTranslateToggle);
 
 //translator button
-const selectAIPopupSwitch = eId("toggle_translator_btn");
+const selectAIPopupSwitch = eId("toggle_select_ai_popup");
 selectAIPopupSwitch.checked = storeData.selectAIPopupOn;
 $on(selectAIPopupSwitch, "change", async ({ target }) => {
 	target.checked
 		? await registerSelectAiPopupScript()
 		: await chrome.scripting.unregisterContentScripts({ ids: ["select-ai-popup"] });
-	setStore({ translatorBtnOn: target.checked });
+	setStore({ selectAIPopupOn: target.checked });
 });
 
 //Compare product from tabs

@@ -81,6 +81,10 @@ export class LangInputBox extends HTMLElement {
 		this.replaceChildren(this.render());
 		this.translator = new Translator();
 	}
+
+	disconnectedCallback() {
+		document.body.style.removeProperty("width");
+	}
 }
 
 customElements.define("lang-input-box", LangInputBox);

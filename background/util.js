@@ -1,5 +1,7 @@
 import { registerAutoTranslateScript } from "../options/js/register-script.js";
+import { getTabs } from "../popup/js/constant.js";
 import { crtTabId } from "../popup/js/extractor.js";
+import { AutoTabGrouper } from "./categorizer.js";
 
 export function getDateTimeName() {
 	return new Date()
@@ -77,7 +79,9 @@ export async function enableAutoTranslate() {
 
 //groupOpenedTabs
 export async function groupOpenedTabs() {
-	//TODO
+	const tabs = await getTabs({ currentWindow: true });
+	const autoTabGrouper = new AutoTabGrouper();
+	for (const tab of tabs) autoTabGrouper.addTabInGroup(tab);
 }
 
 export async function categorizeExistBookmarks() {

@@ -1,17 +1,11 @@
+import { reRegisterAutoTranslateScript, reRegisterSelectAiPopupScript } from "../../background/register-script.js";
+
 const requestPermission = () => chrome.permissions.request({ origins: ["<all_urls>"] });
 
 export async function registerAutoTranslateScript() {
 	const granted = await requestPermission();
 	if (!granted) return alert("permission required");
-	await chrome.scripting.registerContentScripts([
-		{
-			id: "auto_translate",
-			allFrames: true,
-			js: ["scripts/translate/auto-page-translate.js"],
-			matches: ["<all_urls>"],
-			runAt: "document_idle",
-		},
-	]);
+	reRegisterAutoTranslateScript();
 }
 
 export async function registerDomainAutoTranslateScript() {
@@ -32,13 +26,5 @@ export async function registerDomainAutoTranslateScript() {
 export async function registerSelectAiPopupScript() {
 	const granted = await requestPermission();
 	if (!granted) return alert("permission required");
-	await chrome.scripting.registerContentScripts([
-		{
-			id: "select-ai-popup",
-			allFrames: true,
-			js: ["scripts/auto-select-popup.js"],
-			matches: ["<all_urls>"],
-			runAt: "document_idle",
-		},
-	]);
+	reRegisterSelectAiPopupScript();
 }

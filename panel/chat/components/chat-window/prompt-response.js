@@ -15,8 +15,6 @@ export class AiPromptResponse extends HTMLElement {
 			this.chatMessage = new ChatMessage(conversationId, Sender.AI_MODEL, this.markWriterPad.innerHTML);
 			await insertChatMessageInDb(this.chatMessage);
 			const commands = this.parentElement.nextElementSibling["autoCommands"];
-			console.log(commands);
-			console.log(this.parentElement.nextElementSibling);
 			commands && this.lastElementChild["runAutoCommands"](commands);
 		} catch (error) {
 			console.error(error);

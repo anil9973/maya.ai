@@ -1,7 +1,7 @@
+import { MarkdownParser } from "../scripts/markdown/parser/mark-htmldom/parser.js";
 import { generateContentOnGeminiServer } from "./Gemini-api.js";
 import { NOT_AVAILABLE } from "../popup/js/constant.js";
 import { parseMarkDomStream } from "./writer.js";
-import { MarkdownParser } from "../scripts/markdown/parser/mark-htmldom/parser.js";
 
 export class PromptMessenger {
 	constructor() {}
@@ -31,7 +31,7 @@ export class PromptMessenger {
 		} catch (error) {
 			if (error.code === 9) {
 				return await generateContentOnGeminiServer(`${this.userPrompts[0].content}\n${message}`);
-			} else if (error.code !== 20) throw new Error("Failed to response prompt message", { cause: error });
+			} else if (error.code !== 20) throw new Error(i18n("prompt_response_error"), { cause: error });
 		}
 	}
 
@@ -49,7 +49,7 @@ export class PromptMessenger {
 			if (error.code === 9 || error.cause?.code === 9) {
 				const text = await generateContentOnGeminiServer(`${this.userPrompts[0].content}\n${message}`);
 				text && parseMarkDom(text, writerHTMLElem);
-			} else if (error.cause?.code !== 20) throw new Error("Failed to response prompt message", { cause: error });
+			} else if (error.cause?.code !== 20) throw new Error(i18n("prompt_response_error"), { cause: error });
 		}
 	}
 
@@ -77,7 +77,7 @@ export class PromptMessenger {
 			if (error.code === 9 || error.cause?.code === 9) {
 				const text = await generateContentOnGeminiServer(`${this.userPrompts[0].content}\n${message}`);
 				text && writerHTMLElem.appendChild(new Text(text));
-			} else if (error.cause?.code !== 20) throw new Error("Failed to response prompt message", { cause: error });
+			} else if (error.cause?.code !== 20) throw new Error(i18n("prompt_response_error"), { cause: error });
 		}
 	}
 
@@ -87,7 +87,7 @@ export class PromptMessenger {
 
 	destroy() {
 		this.stop();
-		this.session.destroy();
+		this.session?.destroy();
 	}
 }
 

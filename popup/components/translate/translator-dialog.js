@@ -1,10 +1,10 @@
-import { fixLangCode } from "../../js/util.js";
-import { LangInputBox } from "./lang-input-box.js";
-import { Translator } from "../../../AI/translator.js";
+import { LanguageDetector } from "../../../AI/lang-detect.js";
 import { html } from "../../../collections/js/om.compact.js";
+import { Translator } from "../../../AI/translator.js";
+import { LangInputBox } from "./lang-input-box.js";
 import { getCrtTab } from "../../js/extractor.js";
 import { WEBSTORE_ERR } from "../../js/constant.js";
-import { LanguageDetector } from "../../../AI/lang-detect.js";
+import { fixLangCode } from "../../js/util.js";
 // @ts-ignore
 import translatorCss from "../../style/translator-dialog.css" with { type: "css" };
 document.adoptedStyleSheets.push(translatorCss);
@@ -41,6 +41,10 @@ export class TranslatorDialog extends HTMLDialogElement {
 		document.body.style.width = "32rem";
 		this.showModal();
 		langDetector.destroy();
+	}
+
+	disconnectedCallback() {
+		document.body.style.removeProperty("width");
 	}
 }
 

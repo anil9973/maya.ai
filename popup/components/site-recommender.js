@@ -45,7 +45,6 @@ export class WebsiteRecommender extends HTMLElement {
 
 	render() {
 		this.writingPad = document.createElement("mark-writer-pad");
-		this.writingPad.setAttribute("contenteditable", "true");
 		return [this.writingPad];
 	}
 
@@ -60,6 +59,10 @@ export class WebsiteRecommender extends HTMLElement {
 		this.promptMessenger = new PromptMessenger();
 		this.sendMessage();
 		document.body.style.width = "32rem";
+	}
+
+	disconnectedCallback() {
+		document.body.style.removeProperty("width");
 	}
 }
 

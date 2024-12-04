@@ -137,13 +137,18 @@ export class TextSelectionPopup extends HTMLElement {
 		if (this.extractInputBox) return this.extractInputBox.firstElementChild["focus"]();
 		const dataTypes = ["tabular", "facts", "contacts", "SEO keyword"];
 		this.extractInputBox = document.createElement("extract-data-type");
-		this.extractInputBox.innerHTML = `<input type="text" list="extract-data-types">
+		this.extractInputBox.innerHTML = `<input type="text" list="extract-data-types" autofocus>
 		<datalist id="extract-data-types">${dataTypes.map((url) => html`<option value="${url}"></option>`)}</datalist>
 		<svg class="done" viewBox="0 0 24 24">
 			<title>Extract input data</title>
 			<path />
 		</svg>`;
 		this.shadowRoot.appendChild(this.extractInputBox);
+		const inputBox = this.extractInputBox.firstElementChild;
+		inputBox["focus"]();
+		const extractData = () => this.openPromptResponsePopup(`Extract ${inputBox["value"]} data`);
+		$on(this.extractInputBox, "change", extractData);
+		$on(this.extractInputBox.lastElementChild, "click", extractData);
 	}
 
 	QnA() {

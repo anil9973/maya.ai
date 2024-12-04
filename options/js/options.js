@@ -5,13 +5,14 @@ import "../components/snippet/snippet-category.js";
 import "../components/snippet/snippet-container.js";
 import "../components/autocompletion/auto-completion.js";
 import "./config.js";
+import "./contact-mail.js";
 
-/* import "../style/layout.css";
+import "../style/layout.css";
 import "../style/base.css";
 import "../style/setting.css";
 import "../style/snippet.css";
 import "../style/snippet-editor.css";
-import "../style/auto-completion.css"; */
+import "../style/auto-completion.css";
 
 setLang("Configuration");
 setLang("configuration");

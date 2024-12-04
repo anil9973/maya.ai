@@ -13,7 +13,7 @@ export class ChatToolbar extends HTMLElement {
 	}
 
 	render() {
-		return html`<atom-icon ico="menu" title="Open Chat history" @click=${this.openChatHistory.bind(this)}></atom-icon>`;
+		return html`<atom-icon ico="menu" title="${i18n("open_chat_history")}" @click=${this.openChatHistory.bind(this)}></atom-icon>`;
 	}
 
 	connectedCallback() {

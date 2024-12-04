@@ -30,8 +30,8 @@ export class AiRewriter {
 					const prompts = [{ role: "user", content: this.rewriter.sharedContext }];
 					await this.promptWriter.createPromptSession("Text Rewriter", prompts);
 				}
-				this.promptWriter.promptMessage(message);
-			} else if (error.code !== 20) throw new Error("Failed to rewrite content", { cause: error });
+				return await this.promptWriter.promptMessage(message);
+			} else if (error.code !== 20) throw new Error(i18n("failed_to_rewrite_content"), { cause: error });
 		}
 	}
 
@@ -46,8 +46,8 @@ export class AiRewriter {
 		} catch (error) {
 			console.error(error);
 			if (error.code === 9 || error.cause?.code === 9 || error.cause?.name === "NotReadableError")
-				return this.rewrite(message);
-			if (error.cause.code !== 20) throw new Error("Failed to rewrite content", { cause: error });
+				return await this.rewrite(message);
+			if (error.cause.code !== 20) throw new Error(i18n("failed_to_rewrite_content"), { cause: error });
 		}
 	}
 
@@ -73,7 +73,7 @@ export class AiRewriter {
 					await this.promptRewriter.createPromptSession("Text Rewriter", prompts);
 				}
 				this.promptRewriter.promptTextMsgStream(message, null, null, writerHTMLElem);
-			} else if (error.cause.code !== 20) throw new Error("Failed to rewrite content", { cause: error });
+			} else if (error.cause.code !== 20) throw new Error(i18n("failed_to_rewrite_content"), { cause: error });
 		}
 	}
 

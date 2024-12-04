@@ -82,9 +82,8 @@ export class AutoTabGrouper extends SwPromptMessenger {
 
 	async applyTabGroup(tabId, groupTitle) {
 		const tabGroups = await chrome.tabGroups.query({ title: groupTitle });
-		if (tabGroups.length != 0) {
-			chrome.tabs.group({ tabIds: tabId, groupId: tabGroups[0].id });
-		} else {
+		if (tabGroups.length !== 0) chrome.tabs.group({ tabIds: tabId, groupId: tabGroups[0].id });
+		else {
 			try {
 				const newId = await chrome.tabs.group({ tabIds: tabId });
 				chrome.tabGroups.update(newId, { collapsed: false, title: groupTitle, color: this.getRandomClr() });

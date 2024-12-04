@@ -2,7 +2,7 @@ import { addInDomainTranslate } from "../popup/js/domain-trans-script.js";
 
 export async function registerDynamicScriptonUpdate() {
 	const storeData = await getStore(["autoTranslateOn", "translatorBtnOn", "domainsLang"]);
-	storeData.autoTranslateOn && registerAutoTranslateScript();
+	storeData.autoTranslateOn && reRegisterAutoTranslateScript();
 	const domainMatches = Object.keys(storeData.domainsLang ?? {});
 	if (domainMatches.length !== 0) registerDomainAutoTranslateScript(domainMatches);
 }
@@ -19,12 +19,24 @@ async function registerDomainAutoTranslateScript(domainMatches) {
 	]);
 }
 
-async function registerAutoTranslateScript() {
+export async function reRegisterAutoTranslateScript() {
 	await chrome.scripting.registerContentScripts([
 		{
 			id: "auto_translate",
 			allFrames: true,
 			js: ["scripts/translate/auto-page-translate.js"],
+			matches: ["<all_urls>"],
+			runAt: "document_idle",
+		},
+	]);
+}
+
+export async function reRegisterSelectAiPopupScript() {
+	await chrome.scripting.registerContentScripts([
+		{
+			id: "select-ai-popup",
+			allFrames: true,
+			js: ["scripts/auto-select-popup.js"],
 			matches: ["<all_urls>"],
 			runAt: "document_idle",
 		},

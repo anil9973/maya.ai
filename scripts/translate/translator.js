@@ -34,7 +34,7 @@ export class AutoWebPageTranslator extends Translator {
 		await this.createLangDetector();
 		this.toLang ??= (await chrome.storage.local.get("toLang")).toLang ?? fixLangCode(navigator.language);
 		const sourceLang = await this.detectLang(document.title);
-		if (sourceLang === this.toLang) return alert(i18n("source_and_target_lang_identical"));
+		if (sourceLang === this.toLang) return alert(i18n("source_and_target_lang_identical")); //change this
 
 		const canTranslate = await Translator.checkAvailability(sourceLang, this.toLang);
 		if (canTranslate === "Not available") return alert(`${sourceLang} to ${this.toLang} Translator not available`);

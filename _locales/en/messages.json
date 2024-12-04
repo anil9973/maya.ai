@@ -109,6 +109,11 @@
 		"description": "Translate"
 	},
 
+	"translate_webpage": {
+		"message": "Translate webpage",
+		"description": "Translate webpage"
+	},
+
 	"fix_grammar": {
 		"message": "Fix grammar",
 		"description": "Fix grammar"
@@ -466,5 +471,20 @@
 	"delete_snippet": {
 		"message": "Delete snippet",
 		"description": "Delete snippet"
+	},
+
+	"open_chat_history": {
+		"message": "Open Chat history",
+		"description": "Open Chat history"
+	},
+
+	"prompt_response_error": {
+		"message": "Failed to response prompt message",
+		"description": "Failed to response prompt message"
+	},
+
+	"failed_to_rewrite_content": {
+		"message": "Failed to rewrite content",
+		"description": "Failed to rewrite content"
 	}
 }

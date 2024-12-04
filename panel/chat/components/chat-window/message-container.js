@@ -5,9 +5,9 @@ import {
 	pipeConversationMessage,
 	Sender,
 } from "../../../../collections/db/conversation-db.js";
-import { AiPromptResponse } from "./prompt-response.js";
-import { getSession } from "../../../../popup/js/constant.js";
 import { PromptMessenger } from "../../../../AI/prompt-message.js";
+import { getTabs } from "../../../../popup/js/constant.js";
+import { AiPromptResponse } from "./prompt-response.js";
 import { UserQuery } from "./user-query.js";
 
 export class MessageContainer extends HTMLElement {
@@ -18,10 +18,33 @@ export class MessageContainer extends HTMLElement {
 	async openConversation(conversationId, pageData) {
 		this.conversationId = conversationId;
 		const chatMessages = await pipeConversationMessage(this.conversationId);
-		const prompts = chatMessages?.map((message) => ({ role: message.sender, content: message.content })) ?? [];
-		prompts.push({ role: "user", content: `Webpage URL: '${pageData.url}' and title: '${pageData.title}'` });
+		let prompts;
+		if (chatMessages) {
+			const userMessages = chatMessages?.filter((message) => message.sender === "user");
+			prompts = userMessages?.map((message) => ({ role: message.sender, content: message.content }));
+		} else prompts = [{ role: "user", content: `Webpage URL: '${pageData.url}' and title: '${pageData.title}'` }];
 		this.promptMessenger.createPromptSession("Assistant", prompts);
 		this.replaceChildren(...this.render(chatMessages));
+	}
+
+	async switchConversation(tab) {
+		await this.promptMessenger?.destroy();
+		this.promptMessenger = new PromptMessenger();
+		tab ??= (await getTabs({ currentWindow: true, active: true }))[0];
+		const tabConversations = (await chrome.storage.session.get("tabConversations")).tabConversations ?? {};
+		this.conversationId = tabConversations[tab.id];
+		if (this.conversationId) this.openConversation(this.conversationId, tab);
+		else {
+			this.childElementCount == 0 || this.replaceChildren();
+			const prompts = [{ role: "user", content: `Webpage URL: '${tab.url}' and title: '${tab.title}'` }];
+			this.promptMessenger.createPromptSession("Assistant", prompts);
+			this.conversationId = crypto.randomUUID();
+			addEventListener("markstreamcomplete", this.createConversion.bind(this), { once: true });
+		}
+		//save open tab conversation
+		tabConversations[tab.id] = this.conversationId;
+		chrome.storage.session.set({ tabConversations });
+		//TODO chrome.tabs.onUpdated.addListener(onTabSwitch);
 	}
 
 	async createConversion() {
@@ -29,11 +52,12 @@ export class MessageContainer extends HTMLElement {
 			const promptMessenger = new PromptMessenger();
 			const role = "Content Title Generator";
 			const prompts = [{ role: "user", content: this.innerText }];
-			const message = "Generate title of provided content within character Limit 100";
+			const message =
+				"Generate title of provided content within character Limit 100. Don't provide example or explaination";
 			const title = await promptMessenger.promptMessage(message, role, prompts);
 			const conversationTitles = (await getStore("conversationTitles")).conversationTitles ?? {};
 			conversationTitles[this.conversationId] = title?.slice(0, 100);
-			setStore({ conversationTitles });
+			await setStore({ conversationTitles });
 			promptMessenger.destroy();
 		} catch (error) {
 			notify(error.message, "error");
@@ -63,17 +87,7 @@ export class MessageContainer extends HTMLElement {
 	}
 
 	async connectedCallback() {
-		const [tab] = await chrome.tabs.query({ currentWindow: true, active: true });
-
-		this.promptMessenger = new PromptMessenger();
-		this.conversationId = (await getSession("lastConversionId")).lastConversionId;
-		if (this.conversationId) this.openConversation(this.conversationId, tb);
-		else {
-			const prompts = [{ role: "user", content: `Webpage URL: '${tab.url}' and title: '${tab.title}'` }];
-			this.promptMessenger.createPromptSession("Assistant", prompts);
-			this.conversationId = crypto.randomUUID();
-			addEventListener("markstreamcomplete", this.createConversion.bind(this), { once: true });
-		}
+		this.switchConversation();
 		$on(document.body, "openconversion", ({ detail }) => this.openConversation(detail));
 		$on(this.nextElementSibling, "sendpromptmessage", ({ detail }) => this.sendMessage(detail));
 	}

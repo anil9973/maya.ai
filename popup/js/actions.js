@@ -1,7 +1,6 @@
 import { crtTabIndex, getCrtTab, injectFuncScript } from "./extractor.js";
-import { getTabs } from "./constant.js";
-import { checkForeignLang } from "./util.js";
 import { translateCrtPage } from "../../scripts/func-script.js";
+import { getTabs } from "./constant.js";
 
 export async function openCollections() {
 	const index = await crtTabIndex();
@@ -13,6 +12,7 @@ async function openSidePanel(panelType) {
 	getTabs({ active: true, currentWindow: true }).then(async (tabs) => {
 		await chrome.sidePanel.setOptions({ path });
 		await chrome.sidePanel["open"]({ tabId: tabs[0].id });
+		await chrome.runtime.sendMessage(panelType).catch(() => {});
 		close();
 	});
 }
@@ -28,18 +28,13 @@ export async function summarizeThisPage() {
 export async function openPageTranslator() {
 	const tab = await getCrtTab();
 	const domainMatch = new URL(tab.url).origin + "/*";
-	/* const isForeignLang = await checkForeignLang(tab.title);
-	if (isForeignLang) { */
+
 	const toLang = eId("languages_list").value;
 	await injectFuncScript(translateCrtPage, tab.id, toLang);
 	toast("Translating...");
 	await new Promise((r) => setTimeout(r, 3000));
 	const { WebpageTranslator } = await import("../components/translate/webpage-translator.js");
 	document.body.appendChild(new WebpageTranslator(domainMatch, toLang));
-	/* } else {
-		const { TranslatorDialog } = await import("../components/translate/translator-dialog.js");
-		document.body.appendChild(new TranslatorDialog());
-	} */
 }
 
 export async function showRecommendSites() {

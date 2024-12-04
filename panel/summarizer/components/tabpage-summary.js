@@ -3,8 +3,9 @@ import { SummaryTypesRow } from "./summary-types.js";
 import { SummaryContainer } from "./summary/summary-container.js";
 
 export class TabpageSummary extends HTMLElement {
-	constructor() {
+	constructor(tabId) {
 		super();
+		tabId ? (this.id = tabId) : crtTabId().then((tabId) => (this.id = String(tabId)));
 	}
 
 	render() {
@@ -13,7 +14,6 @@ export class TabpageSummary extends HTMLElement {
 
 	async connectedCallback() {
 		this.replaceChildren(...this.render());
-		crtTabId().then((tabId) => (this.id = String(tabId)));
 	}
 }
 
