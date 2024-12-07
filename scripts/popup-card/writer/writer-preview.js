@@ -9,21 +9,22 @@ export class AiWriterPreviewPopup extends HTMLElement {
 		super();
 	}
 
-	/** @param {string} message*/
+	/** @param {string} message */
 	async rewriteRequest(message, context) {
 		try {
 			await this.aiRewriter.rewriteTextStream(message, context, this.writingPad);
 		} catch (error) {
-			toastErr(error.message);
+			toast(error.message, true);
 			this.hidePopover();
 		}
 	}
 
+	/** @param {string} message */
 	async writeRequest(message, context) {
 		try {
 			await this.aiWriter.writeTextStream(message, context, this.writingPad);
 		} catch (error) {
-			toastErr(error.message);
+			toast(error.message, true);
 			this.hidePopover();
 		}
 	}

@@ -57,8 +57,8 @@ export class NotepadDialog extends HTMLDialogElement {
 
 			const length = this.writingPad.textContent.length;
 			const serializedContent = NotepadDialog.markJsonSerializer.serialize(this.writingPad.children);
-			note.content = serializedContent;
-			note.contentLength = length;
+			note.note.content = serializedContent;
+			note.note.contentLength = length;
 			await updateBlockInDb(note);
 			this.remove();
 			notify(i18n("note_saved"));

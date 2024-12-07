@@ -42,7 +42,7 @@ snippet-form {
 
 text-auto-completion,
 variable-completion {
-	max-height: 6lh;
+	max-height: 7lh;
 	padding: 0;
 	border-radius: 0.4em;
 	scrollbar-width: thin;

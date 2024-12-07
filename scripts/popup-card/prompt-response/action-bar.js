@@ -36,12 +36,12 @@ export class ActionBar extends HTMLElement {
 		return ActionBar.markTxtSerializer.serialize(this.previousElementSibling.children);
 	}
 
-	async copyAsMarkContent({ currenTarget }) {
+	async copyAsMarkContent({ currentTarget }) {
 		const mdTxtContent = await this.getMarkTextContent();
 		navigator.clipboard
 			.writeText(mdTxtContent)
-			.then(() => (currenTarget.setAttribute("class", "copied"), toast(i18n("message_copied"))))
-			.catch((err) => alert(err.message));
+			.then(() => (currentTarget?.setAttribute("class", "copied"), toast(i18n("message_copied"))))
+			.catch((err) => toast(err.message, true));
 	}
 
 	async downloadAsMarkContent() {

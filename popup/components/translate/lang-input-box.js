@@ -1,5 +1,5 @@
-import { Translator } from "../../../AI/translator.js";
 import { html, react } from "../../../collections/js/om.compact.js";
+import { AiTranslator } from "../../../AI/translator.js";
 // @ts-ignore
 import languages from "/assets/languages.json" with { type: "json" };
 
@@ -79,7 +79,7 @@ export class LangInputBox extends HTMLElement {
 
 	async connectedCallback() {
 		this.replaceChildren(this.render());
-		this.translator = new Translator();
+		this.translator = new AiTranslator();
 	}
 
 	disconnectedCallback() {

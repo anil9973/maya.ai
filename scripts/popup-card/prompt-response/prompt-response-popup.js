@@ -17,7 +17,7 @@ export class AiPromptResponsePopup extends HTMLElement {
 		} catch (error) {
 			if (error.cause?.code === 20) return;
 			console.error(error);
-			toastErr(error.cause?.message ?? error.message);
+			toast(error.cause?.message ?? error.message, true);
 		}
 	}
 
@@ -35,7 +35,7 @@ export class AiPromptResponsePopup extends HTMLElement {
 	async connectedCallback() {
 		const canPrompt = await PromptMessenger.checkAvailability();
 		if (canPrompt === "Not available") return alert(i18n("prompt_api_not_available"));
-		if (canPrompt === "after-download") notify(i18n("prompt_api_downloading_in_progress"));
+		if (canPrompt === "after-download") toast(i18n("prompt_api_downloading_in_progress"));
 		const actionBar = await createActionBar();
 		this.setAttribute("popover", "");
 		this.attachShadow({ mode: "open" });

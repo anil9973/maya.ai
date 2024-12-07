@@ -287,6 +287,7 @@ export class Tokenizer extends EventEmitter {
 	cursorStates = {
 		[State.BeforeUnorderedList]: this.stateBeforeUnorderedList.bind(this),
 		[State.BeforeNewLine]: this.stateBeforeNewLine.bind(this),
+		[State.BeforeHeading]: this.stateBeforeHeading.bind(this),
 		[State.BeforeOrderedList]: this.stateBeforeOrderedList.bind(this),
 		[State.InFenceBlock]: this.stateInFenceBlock.bind(this),
 		[State.InMathBlock]: this.stateInMathBlock.bind(this),

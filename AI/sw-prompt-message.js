@@ -1,5 +1,5 @@
-import { NOT_AVAILABLE } from "../popup/js/constant.js";
 import { generateContentOnGeminiServer } from "./Gemini-api.js";
+import { NOT_AVAILABLE } from "../popup/js/constant.js";
 
 export class SwPromptMessenger {
 	constructor() {}

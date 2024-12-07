@@ -1,7 +1,7 @@
+import "../../toast.js";
 import "../../../collections/js/reset.js";
 import { html } from "../../../collections/js/om.event.js";
 import { getSync, setSync } from "../../../popup/js/constant.js";
-import { findHeaderText } from "../util.js";
 // @ts-ignore
 import selectionCss from "./selection-popup.css" with { type: "css" };
 
@@ -73,8 +73,9 @@ export class EditFieldSelectionPopup extends HTMLElement {
 
 	insertWriteContent({ detail: textContent }) {
 		if (this.range) {
-			this.range.deleteContents();
-			this.range.insertNode(new Text(textContent));
+			//biome-ignore format:
+			getSelection().setBaseAndExtent(this.range.startContainer, this.range.startOffset, this.range.endContainer, this.range.endOffset);
+			document.execCommand("insertText", null, textContent);
 		} else if (this.inputFieldElem) {
 			this.inputFieldElem.focus();
 			//biome-ignore format:
@@ -85,40 +86,53 @@ export class EditFieldSelectionPopup extends HTMLElement {
 
 	setPosition(popupElem) {
 		popupElem.style.left = this.style.left;
-		popupElem.style.top = `calc(${this.style.top} + 40px)`;
+		if (this.offsetTop < innerHeight - 300) popupElem.style.top = `calc(${this.style.top} + 44px)`;
+		else popupElem.style.bottom = innerHeight - this.offsetTop + 40 + "px";
 	}
 
 	async openTranslatorPopup() {
 		const importUrl = chrome.runtime.getURL("/scripts/popup-card/translator/translator-popup.js");
 		const { TranslatorPopup } = await import(importUrl);
+		/**@type {TranslatorPopup} */
 		const translatorPopup = document.createElement("translator-popup");
 		const descriptors = Object.getOwnPropertyDescriptors(TranslatorPopup.prototype);
 		Object.defineProperties(translatorPopup, descriptors);
 		this.shadowRoot.appendChild(translatorPopup);
-		translatorPopup["connectedCallback"]();
-		translatorPopup["translateText"](this.range);
-		translatorPopup.style.left = this.style.left;
-		translatorPopup.style.top = `calc(${this.style.top} + 40px)`;
+		translatorPopup.connectedCallback();
+		translatorPopup.translateText(this.range, this.inputFieldElem);
+		this.setPosition(translatorPopup);
 	}
 
 	async openPromptResponsePopup(context, message) {
-		if (!this.aiPromptResponsePopup) {
-			const importUrl = chrome.runtime.getURL("/scripts/popup-card/prompt-response/prompt-response-popup.js");
-			const { AiPromptResponsePopup } = await import(importUrl);
-			const descriptors = Object.getOwnPropertyDescriptors(AiPromptResponsePopup.prototype);
-			/**@type {AiPromptResponsePopup} */
-			// @ts-ignore
-			this.aiPromptResponsePopup = document.createElement("aiprompt-response-popup");
-			Object.defineProperties(this.aiPromptResponsePopup, descriptors);
-			this.shadowRoot.appendChild(this.aiPromptResponsePopup);
-			this.setPosition(this.aiPromptResponsePopup);
-			await this.aiPromptResponsePopup.connectedCallback();
-			await this.aiPromptResponsePopup.createSession("Form field explainer", context);
-		} else await this.aiPromptResponsePopup.showPopover();
-		message && this.aiPromptResponsePopup.sendMessage(message, null);
+		try {
+			if (!this.aiPromptResponsePopup) {
+				const importUrl = chrome.runtime.getURL("/scripts/popup-card/prompt-response/prompt-response-popup.js");
+				const { AiPromptResponsePopup } = await import(importUrl);
+				const descriptors = Object.getOwnPropertyDescriptors(AiPromptResponsePopup.prototype);
+				/**@type {AiPromptResponsePopup} */
+				// @ts-ignore
+				this.aiPromptResponsePopup = document.createElement("aiprompt-response-popup");
+				Object.defineProperties(this.aiPromptResponsePopup, descriptors);
+				this.shadowRoot.appendChild(this.aiPromptResponsePopup);
+				this.setPosition(this.aiPromptResponsePopup);
+				await this.aiPromptResponsePopup.connectedCallback();
+				await this.aiPromptResponsePopup.createSession("Form field explainer", context);
+			} else await this.aiPromptResponsePopup.showPopover();
+			message && this.aiPromptResponsePopup.sendMessage(message, null);
+		} catch (error) {
+			console.error(error);
+			toast(error.message, true);
+		}
 	}
 
 	explain() {
+		function findHeaderText(rootElem) {
+			for (let idx = 1; idx < 6; idx++) {
+				const hElem = rootElem.querySelector(`h${idx}`);
+				if (hElem && hElem.textContent) return hElem.textContent;
+			}
+		}
+
 		let context, message;
 		if (this.inputFieldElem) {
 			const labelTxt = this.inputFieldElem.labels[0]?.textContent;
@@ -138,6 +152,7 @@ export class EditFieldSelectionPopup extends HTMLElement {
 		} else {
 			context = "";
 			message = "";
+			//TODO
 		}
 
 		this.openPromptResponsePopup(context, message);
@@ -170,6 +185,7 @@ export class EditFieldSelectionPopup extends HTMLElement {
 				: request && (await this.aiWriterPreviewPopup.rewriteRequest(request));
 		} catch (error) {
 			console.error(error);
+			toast(error.message, true);
 		}
 	}
 

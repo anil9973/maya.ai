@@ -19,7 +19,8 @@ globalThis.setStore = chrome.storage.local.set.bind(chrome.storage.local);
 
 if (location.protocol === "chrome-extension:") {
 	const snackbar = eId("snackbar");
-	globalThis.toast = (msg) => {
+	globalThis.toast = (msg, isErr) => {
+		snackbar.className = isErr ? "error" : "";
 		snackbar.hidden = false;
 		snackbar.innerText = msg;
 		setTimeout(() => (snackbar.hidden = true), 4100);

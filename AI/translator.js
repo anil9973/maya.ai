@@ -2,7 +2,7 @@ import { NOT_AVAILABLE } from "../popup/js/constant.js";
 
 const defaultLang = navigator.language?.split("-", 1)[0].toLowerCase();
 
-export class Translator {
+export class AiTranslator {
 	constructor() {}
 
 	//== Lang Detector =
@@ -13,7 +13,7 @@ export class Translator {
 	}
 
 	async createLangDetector() {
-		const status = await Translator.checkLangDetectAvailability();
+		const status = await AiTranslator.checkLangDetectAvailability();
 		if (status !== "readily") console.info("Detect lang after download");
 		this.langDetector = await ai.languageDetector.create();
 	}
@@ -36,30 +36,27 @@ export class Translator {
 
 	/** @param {string} sourceLanguage @param {string} targetLanguage*/
 	async createTranslator(sourceLanguage, targetLanguage) {
-		this.sourceLang = sourceLanguage;
-		this.targetLang = targetLanguage;
 		const languagePair = { sourceLanguage, targetLanguage };
-		this.translator = await ai.translator.create(languagePair);
+		this[sourceLanguage] ??= await ai.translator.create(languagePair);
 	}
 
 	/** @param {string} sourceText @param {string} [targetLang] @param {string} [sourceLang] */
 	async translate(sourceText, targetLang, sourceLang) {
-		try {
-			targetLang ??= defaultLang;
-			sourceLang ??= await this.detectLang(sourceText);
-			if (sourceLang === targetLang) return sourceText;
-			this.translator ?? (await this.createTranslator(sourceLang, targetLang));
-			if (sourceLang !== this.sourceLang || targetLang !== this.targetLang)
-				await this.createTranslator(sourceLang, targetLang);
-			this.abortController = new AbortController();
-			const signal = this.abortController.signal;
-			return this.translator.translate(sourceText, { signal });
-		} catch (error) {
-			console.error(error);
-		}
+		targetLang ??= defaultLang;
+		sourceLang ??= await this.detectLang(sourceText);
+		if (sourceLang === targetLang) return sourceText;
+		this[sourceLang] ?? (await this.createTranslator(sourceLang, targetLang));
+
+		this.abortController = new AbortController();
+		const signal = this.abortController.signal;
+		return this[sourceLang].translate(sourceText, { signal });
 	}
 
 	stop() {
 		this.abortController?.abort();
+	}
+
+	async destroy(sourceLang) {
+		await this[sourceLang].destroy();
 	}
 }

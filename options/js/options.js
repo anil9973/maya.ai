@@ -6,6 +6,7 @@ import "../components/snippet/snippet-container.js";
 import "../components/autocompletion/auto-completion.js";
 import "./config.js";
 import "./contact-mail.js";
+import { connect } from "../../collections/db/db.js";
 
 import "../style/layout.css";
 import "../style/base.css";
@@ -28,3 +29,15 @@ setLang("contact_us");
 setLang("contactus");
 setLang("starter_guide");
 setLang("more_extensions");
+
+if ((location.hash = "#new-install")) {
+	(async function () {
+		const importUrl = chrome.runtime.getURL("/assets/completion-texts.json");
+		const { default: textList } = await import(importUrl, { with: { type: "json" } });
+		connect().then(async (db) => {
+			const transaction = db.transaction("CompletionTextShots", "readwrite");
+			const textShotStore = transaction.objectStore("CompletionTextShots");
+			for (const textSpan of textList) textShotStore.put({ text: textSpan, useCount: 0 });
+		});
+	})();
+}

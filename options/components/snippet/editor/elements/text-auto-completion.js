@@ -1,6 +1,5 @@
+import { pipeTextShotList } from "../../../../../collections/db/completion-text-db.js";
 import { setCaretAt } from "../processor/processor-helper.js";
-
-const textList = ["improve this", "translate this"];
 
 class TextAutoCompletion extends HTMLElement {
 	constructor() {
@@ -14,13 +13,6 @@ class TextAutoCompletion extends HTMLElement {
 		this.selectIdx = arrowType === UpDown.ArrowDown ? ++this.selectIdx : --this.selectIdx;
 		this.children[this.selectIdx].setAttribute("select", "");
 	} */
-
-	addText(text) {
-		if (textList.indexOf(text) !== -1) return;
-		textList.push(text);
-		setStore({ tags: textList });
-		this.appendChild(new Option(text, text));
-	}
 
 	doComplete(event) {
 		const selectOpt = event ? event.target : this.children[this.selectIdx];
@@ -43,7 +35,7 @@ class TextAutoCompletion extends HTMLElement {
 		this.triggerElem = triggerElem;
 		this.targetStartIndex = range.startOffset + 1;
 		this.style.left = rect.left + "px";
-		this.style.top = rect.top + 16 + "px";
+		this.style.bottom = innerHeight - rect.top + "px";
 		this.showPopover();
 		this.isShow = true;
 	}
@@ -58,9 +50,11 @@ class TextAutoCompletion extends HTMLElement {
 		if (!txt || !this.querySelector(":not([hidden])")) this.hidePopover(), (this.isShow = false);
 	}
 
-	connectedCallback() {
+	async connectedCallback() {
+		const autoCompletionTexts = (await pipeTextShotList()) ?? [];
+		autoCompletionTexts.sort((a, b) => b.useCount - a.useCount);
 		this.setAttribute("popover", "");
-		this.append(...textList.map((text) => new Option(text, text)));
+		this.append(...autoCompletionTexts.map(({ text }) => new Option(text, text)));
 		this.children[0]?.setAttribute("select", "");
 		this.selectIdx = 0;
 		$on(this, "pointerup", this.doComplete);

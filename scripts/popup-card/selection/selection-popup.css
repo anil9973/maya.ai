@@ -132,10 +132,11 @@ extract-data-type {
 		height: 12px;
 		position: absolute;
 		z-index: 11;
-		top: -10px;
 		inset-inline: 0;
 		margin-inline: auto;
 		background-color: inherit;
+
+		top: -10px;
 		clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
 	}
 

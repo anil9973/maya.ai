@@ -64,10 +64,10 @@
 			vertical-align: middle;
 		}
 	}
+}
 
-	& atom-icon[ico="close-circle"] {
-		position: absolute;
-		top: 0;
-		right: 0;
-	}
+atom-icon[ico="close-circle"] {
+	position: absolute;
+	top: 0;
+	right: 0;
 }

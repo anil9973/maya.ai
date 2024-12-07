@@ -1,4 +1,4 @@
-import { Translator } from "../../../AI/translator.js";
+import { AiTranslator } from "../../../AI/translator.js";
 
 /**@param {Text} textNode*/
 function replaceTransData(textNode, transTxt) {
@@ -14,7 +14,7 @@ function replaceTransData(textNode, transTxt) {
 	return textNode.replaceData(startI, endI + 1 - startI, transTxt);
 }
 
-export class SourceTextReplacer extends Translator {
+export class SourceTextReplacer extends AiTranslator {
 	constructor() {
 		super();
 		/**@type {Map<string,Text[]>} */
@@ -23,8 +23,8 @@ export class SourceTextReplacer extends Translator {
 	}
 
 	async init(sourceLang, targetLang) {
-		const canTranslate = await Translator.checkAvailability(sourceLang, targetLang);
-		if (canTranslate === "Not available") return alert("Translator not available");
+		const canTranslate = await AiTranslator.checkAvailability(sourceLang, targetLang);
+		if (canTranslate === "Not available") return toast(i18n("translator_not_available"), true);
 		await this.createTranslator(sourceLang, targetLang);
 	}
 
@@ -37,7 +37,7 @@ export class SourceTextReplacer extends Translator {
 		}
 	}
 
-	/**@param {Range} range */
+	/** @param {Range} range */
 	extractTextNodes(range) {
 		const nodeIterator = document.createNodeIterator(range.commonAncestorContainer, NodeFilter.SHOW_TEXT);
 
@@ -79,10 +79,10 @@ export class SourceTextReplacer extends Translator {
 	}
 
 	/** @param {string} selectedText, @param {HTMLTextAreaElement} editFieldElem*/
-	async replaceTextareaSelectedText(selectedText, editFieldElem) {
+	async replaceTextareaSelectedText(selectedText, editFieldElem, transText) {
 		try {
-			const translatedText = await this.translate(selectedText);
-			editFieldElem.setRangeText(translatedText);
+			// const translatedText = await this.translate(selectedText);
+			editFieldElem.setRangeText(transText);
 		} catch (error) {
 			console.error(error);
 		}

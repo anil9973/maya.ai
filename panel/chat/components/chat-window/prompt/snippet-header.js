@@ -27,6 +27,7 @@ export class SnippetPopupHeader extends HTMLElement {
 		const { snippetCategories, openSnippetCategory } = await getSync(["snippetCategories", "openSnippetCategory"]);
 		this.replaceChildren(...this.render(snippetCategories));
 		openSnippetCategory && (this.firstElementChild["value"] = openSnippetCategory);
+		$on(this.lastElementChild, "click", () => chrome.runtime.openOptionsPage());
 	}
 }
 

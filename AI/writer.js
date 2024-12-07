@@ -47,7 +47,7 @@ export class AiWriter {
 			console.error(error);
 			if (error.code === 9 || error.cause?.code === 9 || error.cause?.name === "NotReadableError")
 				return this.write(message);
-			if (error.cause.code !== 20) throw new Error("Failed to rewrite content", { cause: error });
+			if (error.cause?.code !== 20) throw new Error("Failed to rewrite content", { cause: error });
 		}
 	}
 
@@ -73,7 +73,7 @@ export class AiWriter {
 					await this.promptWriter.createPromptSession("Text Writer", prompts);
 				}
 				this.promptWriter.promptTextMsgStream(message, "Text writer", null, writerHTMLElem);
-			} else if (error.code !== 20) throw new Error("Failed to write content", { cause: error });
+			} else if (error.cause?.code !== 20) throw new Error("Failed to write content", { cause: error });
 		}
 	}
 

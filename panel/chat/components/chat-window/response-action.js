@@ -8,7 +8,6 @@ export class ResponseActionBar extends HTMLElement {
 	}
 
 	runAutoCommands(autoCommands) {
-		console.log(autoCommands);
 		for (const command of autoCommands) this[command]?.();
 	}
 
@@ -29,11 +28,23 @@ export class ResponseActionBar extends HTMLElement {
 	}
 
 	replaceSelectText() {
-		//TODO
+		const textContent = this.previousElementSibling.textContent;
+		document.execCommand("insertText", null, textContent);
 	}
 
-	exportTableAsCSV() {
-		//TODO
+	async exportTableAsCSV() {
+		const table = this.previousElementSibling.querySelector("table");
+		if (!table) return toast("No table found", "error");
+		const { TableToCSVConverter } = await import("../../js/csv.js");
+		const tableToCSVConveter = new TableToCSVConverter();
+		const csvText = tableToCSVConveter.convert(table);
+
+		const blob = new Blob([csvText], { type: "text/csv" });
+		const a = document.createElement("a");
+		a.href = URL.createObjectURL(blob);
+		a.download = Date.now() + ".csv";
+		a.click();
+		setTimeout(() => URL.revokeObjectURL(a.href), 3000);
 	}
 
 	async getMarkJsonContents() {

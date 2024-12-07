@@ -18,12 +18,9 @@ export class ConversationHistory extends HTMLElement {
 	async connectedCallback() {
 		this.id = "conversation-history";
 		this.setAttribute("popover", "");
-		const conversationTitles = (await getStore("conversationTitles")).conversationTitles ?? {};
+		const conversationInfos = (await getStore("conversationInfos")).conversationInfos ?? {};
 		const conversationMap = new Map();
-		const conversations = [];
-		for (const chatId in conversationTitles) conversations.push({ id: chatId, title: conversationTitles[chatId] });
-
-		conversationMap.set("Today", conversations);
+		conversationMap.set("Today", Object.values(conversationInfos));
 		this.replaceChildren(...this.render(conversationMap));
 		this.showPopover();
 	}

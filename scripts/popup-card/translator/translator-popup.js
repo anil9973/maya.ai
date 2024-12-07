@@ -1,6 +1,7 @@
 import "../../../collections/js/reset.js";
+import "../../toast.js";
 import { html } from "../../../collections/js/om.event.js";
-import { Translator } from "../../../AI/translator.js";
+import { AiTranslator } from "../../../AI/translator.js";
 // @ts-ignore
 import languages from "/assets/languages.json" with { type: "json" };
 // @ts-ignore
@@ -15,29 +16,35 @@ export class TranslatorPopup extends HTMLElement {
 	}
 
 	/**@param {Range} range*/
-	async translateText(range) {
+	async translateText(range, inputFieldElem) {
 		try {
-			this.sourceTxtData = range.cloneContents().textContent;
+			this.sourceTxtData = this.range
+				? this.range.cloneContents().textContent
+				: inputFieldElem.value.substring(inputFieldElem.selectionStart, inputFieldElem.selectionEnd);
+			if (!this.sourceTxtData) return;
 			this.range = range;
-			this.translator = new Translator();
-			const canDetectLang = await Translator.checkLangDetectAvailability();
+			this.inputFieldElem = inputFieldElem;
+			this.translator = new AiTranslator();
+			const canDetectLang = await AiTranslator.checkLangDetectAvailability();
 
 			// if (canDetectLang === "Not available") return alert("Cannot detect language");
 			await this.translator.createLangDetector();
 			//biome-ignore format:
 			this.fromLang = canDetectLang === "readily" ? await this.translator.detectLang(this.sourceTxtData.slice(0, 120)) : fixLangCode(document.documentElement.lang);
 			this.toLang ??= (await getStore("toLang")).toLang ?? fixLangCode(navigator.language);
-			if (this.fromLang === this.toLang) return alert("Source and target language are identical");
+			if (this.fromLang === this.toLang) return toast("Source and target language are identical");
 
-			const canTranslate = await Translator.checkAvailability(this.fromLang, this.toLang);
-			if (canTranslate === "Not available") return alert("Translator not available");
+			const canTranslate = await AiTranslator.checkAvailability(this.fromLang, this.toLang);
+			if (canTranslate === "Not available") return toast(i18n("translator_not_available"));
 
 			await this.translator.createTranslator(this.fromLang, this.toLang);
 			await this._translateText(this.fromLang, this.sourceTxtData);
 			this.shadowRoot.replaceChildren(this.render());
+			$('select[name="original-lang"]', this.shadowRoot).value = this.fromLang;
+			$('select[name="translated-lang"]', this.shadowRoot).value = this.toLang;
 			this.showPopover();
 		} catch (error) {
-			toastErr(error.message);
+			toast(error.message);
 		}
 	}
 
@@ -82,6 +89,12 @@ export class TranslatorPopup extends HTMLElement {
 			this.setRange();
 			return srcTextReplacer.replaceSrcTextWithTranslated();
 		}
+		if (this.inputFieldElem)
+			new SourceTextReplacer().replaceTextareaSelectedText(
+				this.sourceTxtData,
+				this.inputFieldElem,
+				this.transTextData,
+			);
 	}
 
 	copyText() {
@@ -116,7 +129,7 @@ export class TranslatorPopup extends HTMLElement {
 
 				<select
 					name="original-lang"
-					.value=${this.fromLang}
+					value="${this.fromLang}"
 					@change=${this.onFromLangChange.bind(this)}>
 					${languageList.map((lang) => `<option value="${lang}">${languages[lang]}</option>`).join("")}
 				</select>
@@ -128,12 +141,12 @@ export class TranslatorPopup extends HTMLElement {
 
 				<select
 					name="translated-lang"
-					.value=${this.toLang}
+					value="${this.toLang}"
 					@change=${this.onToLangChange.bind(this)}>
 					${languageList.map((lang) => `<option value="${lang}">${languages[lang]}</option>`).join("")}
 				</select>
 
-				<svg viewBox="0 0 24 24" class="replace" style="right:24px" @pointerdown=${this.replaceText.bind(this)}>
+				<svg viewBox="0 0 16 16" class="replace" style="right:24px" @pointerdown=${this.replaceText.bind(this)}>
 					<title>${i18n("replace_src_text_with_translated")} (Alt+R)</title>
 					<path />
 				</svg>

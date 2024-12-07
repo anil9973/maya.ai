@@ -1,7 +1,7 @@
 import { NOT_AVAILABLE, setSync, getSync } from "../popup/js/constant.js";
-import { AISummaryType } from "./enums.js";
 import { generateContentOnGeminiServer } from "./Gemini-api.js";
 import { parseMarkDomStream } from "./writer.js";
+import { AISummaryType } from "./enums.js";
 
 export class Summarizer {
 	constructor() {}
@@ -26,11 +26,11 @@ export class Summarizer {
 	}
 
 	/** @param {string} inputText, @returns {Promise<string>}*/
-	async summarize(inputText, context) {
+	async summarize(inputText, context, summaryType = "key-points") {
 		this.abortController = new AbortController();
 		const signal = this.abortController.signal;
-		this.summarizer ?? (await this.createSummarizer(context, { signal }));
-		return this.summarizer.summarize(inputText);
+		this.summarizer ?? (await this.createSummarizer(context, summaryType));
+		return this.summarizer.summarize(inputText, { signal });
 	}
 
 	/** @param {string} inputText*/

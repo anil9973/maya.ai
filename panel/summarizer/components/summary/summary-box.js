@@ -5,6 +5,7 @@ export class SummaryBox extends HTMLElement {
 	constructor(tabId, summaryType) {
 		super();
 		this.id = tabId + summaryType;
+		console.log(this.id);
 	}
 
 	connectedCallback() {

@@ -44,10 +44,10 @@ export class NotepadCard extends HTMLElement {
 		collectionBar.append(collectionTitle, this.deleteBtn);
 
 		const thumbnail = new Image();
-		thumbnail.src = note.thumbnail;
+		note.thumbnail && (thumbnail.src = note.thumbnail);
 		$on(thumbnail, "error", () => thumbnail.remove());
 
-		const noteContent = note.content.slice(0, 10);
+		const noteContent = note.content?.slice(0, 10);
 		this.writingPad = new MarkWriterPad(noteContent);
 		$on(this.writingPad, "click", this.viewNote.bind(this));
 		this.replaceChildren(thumbnail, collectionBar, this.writingPad, new BlockLabels(note.labels));

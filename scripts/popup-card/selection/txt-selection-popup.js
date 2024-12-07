@@ -64,7 +64,8 @@ export class TextSelectionPopup extends HTMLElement {
 
 	setPosition(popupElem) {
 		popupElem.style.left = this.style.left;
-		popupElem.style.top = `calc(${this.style.top} + 40px)`;
+		if (this.offsetTop < innerHeight - 300) popupElem.style.top = `calc(${this.style.top} + 44px)`;
+		else popupElem.style.bottom = innerHeight - this.offsetTop + 40 + "px";
 	}
 
 	async openSummarizerPopup(sourceTxtData) {
@@ -95,20 +96,25 @@ export class TextSelectionPopup extends HTMLElement {
 	}
 
 	async openPromptResponsePopup(request) {
-		if (!this.aiPromptResponsePopup) {
-			const importUrl = chrome.runtime.getURL("/scripts/popup-card/prompt-response/prompt-response-popup.js");
-			const { AiPromptResponsePopup } = await import(importUrl);
-			const descriptors = Object.getOwnPropertyDescriptors(AiPromptResponsePopup.prototype);
-			/**@type {AiPromptResponsePopup} */
-			// @ts-ignore
-			this.aiPromptResponsePopup = document.createElement("aiprompt-response-popup");
-			Object.defineProperties(this.aiPromptResponsePopup, descriptors);
-			this.shadowRoot.appendChild(this.aiPromptResponsePopup);
-			this.setPosition(this.aiPromptResponsePopup);
-			await this.aiPromptResponsePopup.connectedCallback();
-			await this.aiPromptResponsePopup.createSession(null, this.sourceTxtData);
-		} else await this.aiPromptResponsePopup.showPopover();
-		request && this.aiPromptResponsePopup.sendMessage(request, null);
+		try {
+			if (!this.aiPromptResponsePopup) {
+				const importUrl = chrome.runtime.getURL("/scripts/popup-card/prompt-response/prompt-response-popup.js");
+				const { AiPromptResponsePopup } = await import(importUrl);
+				const descriptors = Object.getOwnPropertyDescriptors(AiPromptResponsePopup.prototype);
+				/**@type {AiPromptResponsePopup} */
+				// @ts-ignore
+				this.aiPromptResponsePopup = document.createElement("aiprompt-response-popup");
+				Object.defineProperties(this.aiPromptResponsePopup, descriptors);
+				this.shadowRoot.appendChild(this.aiPromptResponsePopup);
+				this.setPosition(this.aiPromptResponsePopup);
+				await this.aiPromptResponsePopup.connectedCallback();
+				await this.aiPromptResponsePopup.createSession(null, this.sourceTxtData);
+			} else await this.aiPromptResponsePopup.showPopover();
+			request && this.aiPromptResponsePopup.sendMessage(request, null);
+		} catch (error) {
+			console.error(error);
+			toast(error.message, true);
+		}
 	}
 
 	customPrompt() {

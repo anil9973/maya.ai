@@ -64,7 +64,8 @@ action-bar {
 		&.stop {
 			position: absolute;
 			z-index: 1;
-			left: 75.5%;
+			left: 72%;
+			top: 8px;
 		}
 	}
 
@@ -73,7 +74,7 @@ action-bar {
 		bottom: 0;
 		field-sizing: content;
 		min-height: 1lh;
-		width: 80%;
+		width: 77%;
 		padding: 4px;
 		border-radius: 4px;
 		background-color: inherit;
@@ -83,6 +84,10 @@ action-bar {
 		&:placeholder-shown + svg.send {
 			visibility: hidden;
 		}
+	}
+
+	& button {
+		border-radius: 4px;
 	}
 }
 

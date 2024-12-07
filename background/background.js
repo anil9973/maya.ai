@@ -73,7 +73,9 @@ const MessageHandler = {
 
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
 	if (MessageHandler[request.msg]) {
-		MessageHandler[request.msg](request, sender)?.then?.(sendResponse);
+		MessageHandler[request.msg](request, sender)
+			?.then?.(sendResponse)
+			.catch((err) => sendResponse({ errCaused: err.message }));
 		return true;
 	}
 });
@@ -131,6 +133,7 @@ export function setInstallation({ reason }) {
 			for (const gks of commands) gks.shortcut === "" && missingShortcuts.push(gks);
 			missingShortcuts.length === 0 || (await chrome.storage.local.set({ missingShortcuts }));
 			chrome.tabs.create({ url: "/guide/welcome-guide.html" });
+			chrome.tabs.create({ url: "options/index.html#new-install", active: false });
 		});
 	}
 	reason === "install" && oneTimeInstall();

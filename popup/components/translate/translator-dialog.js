@@ -1,6 +1,6 @@
 import { LanguageDetector } from "../../../AI/lang-detect.js";
 import { html } from "../../../collections/js/om.compact.js";
-import { Translator } from "../../../AI/translator.js";
+import { AiTranslator } from "../../../AI/translator.js";
 import { LangInputBox } from "./lang-input-box.js";
 import { getCrtTab } from "../../js/extractor.js";
 import { WEBSTORE_ERR } from "../../js/constant.js";
@@ -34,7 +34,7 @@ export class TranslatorDialog extends HTMLDialogElement {
 		const langDetector = new LanguageDetector();
 		let sourceLang = await langDetector.detectLang(this.sourceText ? this.sourceText : tab.title);
 		let toLang = (await getStore("toLang")).toLang ?? fixLangCode(navigator.language);
-		const canTranslate = await Translator.checkAvailability(sourceLang, toLang);
+		const canTranslate = await AiTranslator.checkAvailability(sourceLang, toLang);
 		if (canTranslate === "Not available") return console.log("Translator not available");
 		this.replaceChildren(new LangInputBox(sourceLang), new LangInputBox(toLang));
 		this.firstElementChild["inputTxtValue"] = this.sourceText;

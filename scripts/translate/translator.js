@@ -1,10 +1,12 @@
-import { Translator } from "../../AI/translator.js";
+import "../toast.js";
+import { AiTranslator } from "../../AI/translator.js";
 
 const fixLangCode = (lang) => lang?.split("-", 1)[0].toLowerCase();
 const i18n = chrome.i18n.getMessage.bind(this);
 
 /**@param {Text} textNode*/
 function replaceTransData(textNode, transTxt) {
+	if (!transTxt) return;
 	const data = textNode.data;
 	const size = data.length;
 
@@ -17,11 +19,11 @@ function replaceTransData(textNode, transTxt) {
 	return textNode.replaceData(startI, endI + 1 - startI, transTxt);
 }
 
-export class AutoWebPageTranslator extends Translator {
+export class AutoWebPageTranslator extends AiTranslator {
+	/** @param {string} toLang */
 	constructor(toLang) {
 		super();
 		this.toLang = toLang;
-		console.log(this.toLang);
 		/**@type {Map<string,Text[]>} */
 		this.textNodeMap = new Map();
 		this.textDataList = [];
@@ -29,18 +31,28 @@ export class AutoWebPageTranslator extends Translator {
 	}
 
 	async init() {
-		const canLangDetect = await Translator.checkLangDetectAvailability();
+		const canLangDetect = await AiTranslator.checkLangDetectAvailability();
 		if (canLangDetect === "Not available") return alert(i18n("translator_not_available"));
 		await this.createLangDetector();
-		this.toLang ??= (await chrome.storage.local.get("toLang")).toLang ?? fixLangCode(navigator.language);
-		const sourceLang = await this.detectLang(document.title);
-		if (sourceLang === this.toLang) return alert(i18n("source_and_target_lang_identical")); //change this
 
-		const canTranslate = await Translator.checkAvailability(sourceLang, this.toLang);
-		if (canTranslate === "Not available") return alert(`${sourceLang} to ${this.toLang} Translator not available`);
-		await this.createTranslator(sourceLang, this.toLang);
-		console.log("Translating...");
-		await this.translateElem(document.documentElement, this.toLang, sourceLang);
+		const translateLangElem = async (langElem, elemLang) => {
+			const canTranslate = await AiTranslator.checkAvailability(sourceLang, this.toLang);
+			if (canTranslate === "Not available")
+				return toast(`${sourceLang} to ${this.toLang} Translator not available`, true);
+			await this.createTranslator(sourceLang, this.toLang);
+			await this.translateElem(langElem, this.toLang, elemLang);
+		};
+
+		this.toLang ??= (await chrome.storage.local.get("toLang")).toLang ?? fixLangCode(navigator.language);
+		const sourceLang = fixLangCode(document.documentElement.lang) || (await this.detectLang(document.title));
+		if (sourceLang === this.toLang) {
+			toast(i18n("source_and_target_lang_identical"), true);
+			for (const langElem of document.body.querySelectorAll("[lang]")) {
+				const elemLang = fixLangCode(langElem["lang"]);
+				elemLang === this.toLang || translateLangElem(langElem, elemLang);
+			}
+		} else translateLangElem(document.documentElement, sourceLang);
+		toast("Translating...");
 		this.observeAddTextNodes();
 	}
 
@@ -67,10 +79,13 @@ export class AutoWebPageTranslator extends Translator {
 		}
 	}
 
-	/** @public @param {string} toLang @param {string} sourceLang */
+	/** @param {HTMLElement|HTMLElement[]} rootElem, @param {string} toLang @param {string} sourceLang */
 	async translateElem(rootElem, toLang, sourceLang) {
 		try {
-			this.extractTextNodes(rootElem);
+			if (Array.isArray(rootElem)) {
+				rootElem.forEach(this.extractTextNodes.bind(this));
+				rootElem.length = 0;
+			} else this.extractTextNodes(rootElem);
 			const promises = [];
 			for (const txtData of this.textNodeMap.keys()) promises.push(this.translate(txtData, toLang, sourceLang));
 			const translatedTexts = await Promise.all(promises);
@@ -78,6 +93,7 @@ export class AutoWebPageTranslator extends Translator {
 			this.setTranslatedTextNode(translatedTexts);
 		} catch (error) {
 			console.error(error);
+			toast(error.message, true);
 		} finally {
 			this.textNodeMap.clear();
 			this.textDataList.length = 0;
@@ -85,15 +101,25 @@ export class AutoWebPageTranslator extends Translator {
 	}
 
 	async observeAddTextNodes() {
+		const rootElements = [];
+		let timerId;
 		const txtAddedListener = (mutationList) => {
-			for (const mutation of mutationList) {
-				if (mutation.addedNodes.length === 0 || mutation.addedNodes[0].textContent.trim()) continue;
-				//biome-ignore format:
-				this.detectLang(document.title).then((sourceLang) => { sourceLang === this.toLang || this.translateElem(mutation.addedNodes[0], this.toLang, sourceLang) });
-			}
+			mutationList.forEach(async (mutation) => {
+				if (mutation.addedNodes.length === 0 || !mutation.addedNodes[0].textContent.trim()) return;
+				const firstNode = mutation.addedNodes[0];
+				const parentElem = firstNode.closest?.("[contenteditable]");
+				if (parentElem && parentElem.contenteditable === "true") return;
+				const sourceLang = firstNode.lang || (await this.detectLang(firstNode.textContent.slice(0, 100)));
+				for (const node of mutation.addedNodes) {
+					if (sourceLang === this.toLang) continue;
+					rootElements.push(node);
+					clearTimeout(timerId);
+					timerId = setTimeout(() => this.translateElem(rootElements, this.toLang, sourceLang), 2000);
+				}
+			});
 		};
 
 		const transObserver = new MutationObserver(txtAddedListener);
-		transObserver.observe(document.body, { characterData: true, childList: true, subtree: true });
+		transObserver.observe(document.body, { childList: true, subtree: true });
 	}
 }

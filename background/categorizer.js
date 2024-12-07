@@ -7,6 +7,8 @@ import { insertBlockInDb } from "../collections/db/block-db.js";
 import { SwPromptMessenger } from "../AI/sw-prompt-message.js";
 import { saveFileInDb } from "../collections/db/file-db.js";
 import { getCrtTab } from "../popup/js/extractor.js";
+import { Summarizer } from "../AI/summarizer.js";
+import { AISummaryType } from "../AI/enums.js";
 
 export class AutoBookmarkCategorizer extends SwPromptMessenger {
 	constructor() {
@@ -34,11 +36,14 @@ export class AutoBookmarkCategorizer extends SwPromptMessenger {
 
 	async bookmarkTab(url, categories, hashTags) {
 		const [tab] = await getTabs({ url });
-		if (tab.url !== url) return;
+		if (!tab || tab.url !== url) return;
 		/**@type {string[]} */
 		const pageData = await injectFuncScript(extractPageThumbnail, tab.id);
+		const description =
+			pageData?.[0] ?? (await new Summarizer().summarize(url, null, AISummaryType.TD_LR).catch(() => {}));
+		//TODO summarize webpage instead of webpage description
 		//biome-ignore format:
-		const bookmarkBlock = new BookmarkBlock(tab.title, tab.url, pageData[0], pageData[1] || tab.favIconUrl, hashTags);
+		const bookmarkBlock = new BookmarkBlock(tab.title, tab.url, description, pageData?.[1] || tab.favIconUrl, hashTags);
 		const block = new Block(BlockType.Bookmark, bookmarkBlock);
 		await block.setFolder(categories);
 		await insertBlockInDb(block);
@@ -175,7 +180,7 @@ export class ImageCategorizer extends SwPromptMessenger {
 			const message = this.createPromptMessageForScreenshot(imgBase64, pageUrl, pageTitle);
 			const infoData = await this.generateDescription(message);
 			if (!infoData) return;
-			const filename = `${infoData.category}/screenshot_${getDateTimeName()}.png`;
+			const filename = `${infoData.category}/screenshot_${new URL(pageUrl).host.replaceAll(".", "-")}_${getDateTimeName()}.png`;
 			const localDirHandler = null;
 			const imageUrl = "blob://" + crypto.randomUUID();
 			if (localDirHandler) {
@@ -237,7 +242,7 @@ export class NoteCategorizer extends SwPromptMessenger {
 			//biome-ignore format:
 			const noteBlock = new NoteBlock(tab.title, markJsonContent, description, tab.url, thumbnail || tab.favIconUrl, infoData.hashtags);
 			const block = new Block(BlockType.Note, noteBlock);
-			await block.setFolder(infoData.category);
+			infoData.category && (await block.setFolder(infoData.category));
 			await insertBlockInDb(block);
 		} catch (error) {
 			console.error(error);

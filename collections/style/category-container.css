@@ -45,6 +45,10 @@ bookmark-card {
 		padding-inline: 0.4em;
 	}
 
+	& h3 {
+		line-clamp: 2;
+	}
+
 	& p {
 		line-clamp: 3;
 	}

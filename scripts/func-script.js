@@ -32,3 +32,9 @@ export function extractHtmlTagsContent(tagName, visibleonly) {
 
 	return textArr.join("\n");
 }
+
+export async function insertCropper() {
+	const { createCropUI } = await import(chrome.runtime.getURL("scripts/screenshot/crop-box.js"));
+	const shotCropper = await createCropUI();
+	document.body.appendChild(shotCropper);
+}

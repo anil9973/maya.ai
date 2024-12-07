@@ -47,7 +47,7 @@ export class AiRewriter {
 			console.error(error);
 			if (error.code === 9 || error.cause?.code === 9 || error.cause?.name === "NotReadableError")
 				return await this.rewrite(message);
-			if (error.cause.code !== 20) throw new Error(i18n("failed_to_rewrite_content"), { cause: error });
+			if (error.cause?.code !== 20) throw new Error(i18n("failed_to_rewrite_content"), { cause: error });
 		}
 	}
 
@@ -73,7 +73,7 @@ export class AiRewriter {
 					await this.promptRewriter.createPromptSession("Text Rewriter", prompts);
 				}
 				this.promptRewriter.promptTextMsgStream(message, null, null, writerHTMLElem);
-			} else if (error.cause.code !== 20) throw new Error(i18n("failed_to_rewrite_content"), { cause: error });
+			} else if (error.cause?.code !== 20) throw new Error(i18n("failed_to_rewrite_content"), { cause: error });
 		}
 	}
 

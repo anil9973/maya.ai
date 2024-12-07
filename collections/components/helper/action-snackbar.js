@@ -17,6 +17,14 @@ action-snackbar {
 
 	translate: 0 200%;
 	animation: in-out 5s ease-out;
+
+	&.error {
+		top: 2em;
+		bottom: unset;
+		background-color: red;
+		color: white;
+		translate: 0 -200%;
+	}
 }
 
 action-snackbar {

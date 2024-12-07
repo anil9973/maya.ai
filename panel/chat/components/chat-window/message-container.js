@@ -18,15 +18,17 @@ export class MessageContainer extends HTMLElement {
 	async openConversation(conversationId, pageData) {
 		this.conversationId = conversationId;
 		const chatMessages = await pipeConversationMessage(this.conversationId);
-		let prompts;
-		if (chatMessages) {
+		//TODO sort by time
+		const prompts = [{ role: "user", content: `Webpage URL: '${pageData.url}' and title: '${pageData.title}'` }];
+		if (chatMessages?.length !== 0) {
 			const userMessages = chatMessages?.filter((message) => message.sender === "user");
-			prompts = userMessages?.map((message) => ({ role: message.sender, content: message.content }));
-		} else prompts = [{ role: "user", content: `Webpage URL: '${pageData.url}' and title: '${pageData.title}'` }];
+			prompts.push(...userMessages?.map((message) => ({ role: message.sender, content: message.content })));
+		}
 		this.promptMessenger.createPromptSession("Assistant", prompts);
 		this.replaceChildren(...this.render(chatMessages));
 	}
 
+	/** @param {chrome.tabs.Tab} [tab]*/
 	async switchConversation(tab) {
 		await this.promptMessenger?.destroy();
 		this.promptMessenger = new PromptMessenger();
@@ -39,7 +41,7 @@ export class MessageContainer extends HTMLElement {
 			const prompts = [{ role: "user", content: `Webpage URL: '${tab.url}' and title: '${tab.title}'` }];
 			this.promptMessenger.createPromptSession("Assistant", prompts);
 			this.conversationId = crypto.randomUUID();
-			addEventListener("markstreamcomplete", this.createConversion.bind(this), { once: true });
+			addEventListener("markstreamcomplete", this.createConversion.bind(this, tab), { once: true });
 		}
 		//save open tab conversation
 		tabConversations[tab.id] = this.conversationId;
@@ -47,7 +49,7 @@ export class MessageContainer extends HTMLElement {
 		//TODO chrome.tabs.onUpdated.addListener(onTabSwitch);
 	}
 
-	async createConversion() {
+	async createConversion(tab) {
 		try {
 			const promptMessenger = new PromptMessenger();
 			const role = "Content Title Generator";
@@ -55,9 +57,16 @@ export class MessageContainer extends HTMLElement {
 			const message =
 				"Generate title of provided content within character Limit 100. Don't provide example or explaination";
 			const title = await promptMessenger.promptMessage(message, role, prompts);
-			const conversationTitles = (await getStore("conversationTitles")).conversationTitles ?? {};
-			conversationTitles[this.conversationId] = title?.slice(0, 100);
-			await setStore({ conversationTitles });
+			const conversationInfos = (await getStore("conversationInfos")).conversationInfos ?? {};
+			const conversation = {
+				id: this.conversationId,
+				name: title?.slice(0, 100),
+				url: tab.url,
+				title: tab.title,
+				createdAt: Date.now(),
+			};
+			conversationInfos[this.conversationId] = conversation;
+			await setStore({ conversationInfos });
 			promptMessenger.destroy();
 		} catch (error) {
 			notify(error.message, "error");
@@ -88,7 +97,7 @@ export class MessageContainer extends HTMLElement {
 
 	async connectedCallback() {
 		this.switchConversation();
-		$on(document.body, "openconversion", ({ detail }) => this.openConversation(detail));
+		$on(document.body, "openconversion", ({ detail }) => this.openConversation(detail.id, { url: detail.url, title: detail.title }));
 		$on(this.nextElementSibling, "sendpromptmessage", ({ detail }) => this.sendMessage(detail));
 	}
 }

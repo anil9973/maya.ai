@@ -95,7 +95,8 @@ getStore("showWelcomeConfig").then(async ({ showWelcomeConfig }) => {
 
 //Check this tab and previous tab is about product
 async function checkproductTab() {
+	console.log("Checking product tab...");
 	const isProductTab = await chrome.runtime.sendMessage({ msg: "checkProductTab" });
-	if (isProductTab.includes("true")) compareProductBtn.style.display = "flex";
+	if (isProductTab?.includes("true")) compareProductBtn.style.display = "flex";
 }
 getStore("compareProductOn").then(({ compareProductOn }) => compareProductOn && setTimeout(checkproductTab, 1000));

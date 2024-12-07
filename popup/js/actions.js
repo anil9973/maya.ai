@@ -1,5 +1,5 @@
 import { crtTabIndex, getCrtTab, injectFuncScript } from "./extractor.js";
-import { translateCrtPage } from "../../scripts/func-script.js";
+import { insertCropper, translateCrtPage } from "../../scripts/func-script.js";
 import { getTabs } from "./constant.js";
 
 export async function openCollections() {
@@ -28,11 +28,14 @@ export async function summarizeThisPage() {
 export async function openPageTranslator() {
 	const tab = await getCrtTab();
 	const domainMatch = new URL(tab.url).origin + "/*";
-
+	const { domainsLang } = await getStore("domainsLang");
+	const domainExist = domainsLang?.[this.domainMatch] ? true : false;
 	const toLang = eId("languages_list").value;
-	await injectFuncScript(translateCrtPage, tab.id, toLang);
-	toast("Translating...");
-	await new Promise((r) => setTimeout(r, 3000));
+	if (!domainExist) {
+		await injectFuncScript(translateCrtPage, tab.id, toLang);
+		toast("Translating...");
+		await new Promise((r) => setTimeout(r, 3000));
+	}
 	const { WebpageTranslator } = await import("../components/translate/webpage-translator.js");
 	document.body.appendChild(new WebpageTranslator(domainMatch, toLang));
 }
@@ -49,13 +52,23 @@ export async function compareProduct() {
 }
 
 export async function injectSelector() {
-	await injectScript("scripts/selector/select-element.js");
-	close();
+	try {
+		await injectScript("scripts/selector/select-element.js");
+		close();
+	} catch (error) {
+		console.error(error);
+		toast(error.message, "error");
+	}
 }
 
 export async function captureScreenshot() {
-	await injectScript("scripts/screenshot/cropper.js");
-	close();
+	try {
+		await injectFuncScript(insertCropper);
+		close();
+	} catch (error) {
+		console.error(error);
+		toast(error.message, "error");
+	}
 }
 
 /**@param {string} script*/

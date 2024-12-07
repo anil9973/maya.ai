@@ -18,11 +18,13 @@ export class ImageSelectionPopup extends HTMLElement {
 		const imgSrcUrl = this.targetImgElem.currentSrc || this.targetImgElem.src;
 		const message = { msg: "addImageInCollection", imgSrcUrl, alt: this.targetImgElem.alt };
 		const response = await chrome.runtime.sendMessage(message);
+		if (response.errCaused) return toast(response.errCaused, true);
 	}
 
 	setPosition(popupElem) {
 		popupElem.style.left = this.style.left;
-		popupElem.style.top = `calc(${this.style.top} + 40px)`;
+		if (this.offsetTop < innerHeight - 300) popupElem.style.top = `calc(${this.style.top} + 40px)`;
+		else popupElem.style.bottom = innerHeight - this.offsetTop + 40 + "px";
 	}
 
 	async openPromptResponsePopup(request) {

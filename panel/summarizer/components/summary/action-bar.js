@@ -49,7 +49,9 @@ export class ActionBar extends HTMLElement {
 		const tabId = +this.closest("tabpage-summary")?.id;
 		const markTextContent = await this.getMarkTextContent();
 		const markJsonContent = await this.getMarkJsonContents();
-		await chrome.runtime.sendMessage({ msg: "addNoteInCollection", tabId, markTextContent, markJsonContent });
+		const message = { msg: "addNoteInCollection", tabId, markTextContent, markJsonContent };
+		const response = await chrome.runtime.sendMessage(message);
+		if (response.errCaused) return toast(response.errCaused, "error");
 	}
 
 	readAloud() {

@@ -31,4 +31,18 @@ text-card {
 		font-family: monospace;
 		flex-grow: 1;
 	}
+
+	&:hover {
+		background-color: light-dark(whitesmoke, hsl(0, 0%, 20%));
+
+		& svg {
+			opacity: 1;
+		}
+	}
+
+	& svg {
+		height: 1.1em;
+		opacity: 0;
+		transition: opacity 200ms ease-out;
+	}
 }

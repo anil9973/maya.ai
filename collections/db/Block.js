@@ -104,6 +104,23 @@ export class ImageBlock {
 	}
 }
 
+export class VideoBlock {
+	/**
+	 * @param {string} srcUrl
+	 * @param {string} poster
+	 * @param {string} description
+	 * @param {string} caption
+	 */
+	constructor(srcUrl, pageUrl, description, poster, caption, labels) {
+		this.srcUrl = srcUrl;
+		this.pageUrl = pageUrl;
+		this.poster = poster;
+		this.caption = caption;
+		this.description = description;
+		this.labels = mapLabels(labels);
+	}
+}
+
 export class CollectionFolder {
 	constructor(id, isFolder) {
 		this.id = id;

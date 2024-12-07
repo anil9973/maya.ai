@@ -25,3 +25,5 @@ if (missingShortcuts) {
 		cellElem.nextElementSibling.firstElementChild.textContent = chrome.i18n.getMessage("set_shortcut");
 	}
 }
+
+//Save default Data on db

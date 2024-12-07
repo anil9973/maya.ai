@@ -47,7 +47,7 @@ export class SummaryContainer extends HTMLElement {
 		let summaryBox = document.getElementById(this.tabId + summaryType);
 		AISummaryTypes.has(summaryType) && (await this.aiSummarizer.changeSummaryType(summaryType));
 		if (!summaryBox) {
-			summaryBox = new SummaryBox(this.tabId, +summaryType);
+			summaryBox = new SummaryBox(this.tabId, summaryType);
 			this.appendChild(summaryBox);
 			AISummaryTypes.has(summaryType)
 				? this.summarize(summaryBox)

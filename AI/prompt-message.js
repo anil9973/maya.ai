@@ -29,6 +29,7 @@ export class PromptMessenger {
 			this.session ?? (await this.createPromptSession(systemRole, initialPrompts));
 			return await this.session.prompt(message, { signal });
 		} catch (error) {
+			console.error(error);
 			if (error.code === 9) {
 				return await generateContentOnGeminiServer(`${this.userPrompts[0].content}\n${message}`);
 			} else if (error.code !== 20) throw new Error(i18n("prompt_response_error"), { cause: error });

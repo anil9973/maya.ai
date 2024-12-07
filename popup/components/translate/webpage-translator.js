@@ -18,11 +18,9 @@ export class WebpageTranslator extends HTMLDialogElement {
 	async translateThisDomain(event) {
 		const checked = event.target.checked;
 		if (checked) {
-			await chrome.runtime.sendMessage({
-				msg: "addDomainInTranslate",
-				domain: this.domainMatch,
-				toLang: this.toLang,
-			});
+			const message = { msg: "addDomainInTranslate", domain: this.domainMatch, toLang: this.toLang };
+			const response = await chrome.runtime.sendMessage(message);
+			if (response.errCaused) return toast(response.errCaused, true);
 		} else {
 			const domainsLang = (await getStore("domainsLang")).domainsLang ?? {};
 			await removeFromDomainTranslate(this.domainMatch);
@@ -45,13 +43,13 @@ export class WebpageTranslator extends HTMLDialogElement {
 		}
 	}
 
-	render() {
+	render(domainExist) {
 		return html`<atom-icon ico="close-circle" title="" @click=${this.remove.bind(this)}></atom-icon>
 		<h3 style="text-align:center;margin-top:0">${i18n("auto_translate")}</h3>
         <li>
             <span>${i18n("auto_translate_this_domain")}</span>
 			<label class="switch">
-				<input type="checkbox" @change=${this.translateThisDomain.bind(this)} />
+				<input type="checkbox" ?checked=${domainExist} @change=${this.translateThisDomain.bind(this)} />
 				<span class="slider"></span>
 			</label>
 		</li>
@@ -65,11 +63,17 @@ export class WebpageTranslator extends HTMLDialogElement {
 		</li>`;
 	}
 
-	connectedCallback() {
+	async connectedCallback() {
+		const { domainsLang } = await getStore("domainsLang");
+		const domainExist = domainsLang?.[this.domainMatch] ? true : false;
 		this.id = "webpage-translator";
-		this.replaceChildren(this.render());
+		this.replaceChildren(this.render(domainExist));
 		this.showModal();
 		document.body.style.width = "22rem";
+	}
+
+	disconnectedCallback() {
+		document.body.style.width = "unset";
 	}
 }
 

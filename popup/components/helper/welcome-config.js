@@ -13,7 +13,7 @@ export class WelcomeConfigDialog extends HTMLDialogElement {
 		const groupOpenedTabs = eId("group_opened_tabs").checked;
 		const message = { msg: "toggle_auto_tabgrouping", autoTabGroupingOn: target.checked, groupOpenedTabs };
 		const response = await chrome.runtime.sendMessage(message);
-		console.log(response);
+		if (response.errCaused) return toast(response.errCaused, "error");
 	}
 
 	async toggleCategorizeBookmark({ target }) {
@@ -26,7 +26,7 @@ export class WelcomeConfigDialog extends HTMLDialogElement {
 			includePageThumbnail,
 		};
 		const response = await chrome.runtime.sendMessage(message);
-		console.log(response);
+		if (response.errCaused) return toast(response.errCaused, "error");
 	}
 
 	render() {

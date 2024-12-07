@@ -9,12 +9,14 @@ chat-toolbar {
 }
 
 message-container {
-	height: 90vh;
 	display: flex;
 	flex-direction: column;
 	row-gap: 0.5em;
+	height: 90vh;
 	padding-inline: 0.5em;
 	padding-top: 0.5em;
+	overflow-y: auto;
+	scrollbar-width: thin;
 }
 
 user-query,

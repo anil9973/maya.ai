@@ -13,6 +13,7 @@ const keys = [
 	"compareProductOn",
 	"autoSummarizeOnTabSwitch",
 	"selectAIPopupOn",
+	"autoTranslateOn",
 ];
 const storeData = await getStore(keys);
 
@@ -80,7 +81,7 @@ async function toggleTabGrouping({ target }) {
 		groupOpenedTabs: groupOpenTabsSwitch.checked,
 	};
 	const response = await chrome.runtime.sendMessage(message);
-	console.log(response);
+	if (response?.errCaused) return toast(response.errCaused, "error");
 }
 
 async function toggleCategorizeBookmark({ target }) {
@@ -91,7 +92,7 @@ async function toggleCategorizeBookmark({ target }) {
 		includePageThumbnail: includePageThumbnailSwitch.checked,
 	};
 	const response = await chrome.runtime.sendMessage(message);
-	console.log(response);
+	if (response.errCaused) return toast(response.errCaused, "error");
 }
 
 async function onAutoTranslateToggle(event) {

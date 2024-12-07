@@ -25,7 +25,7 @@ export class SummarizerPopup extends HTMLElement {
 		} catch (error) {
 			if (error.cause?.code === 20) return;
 			console.error(error);
-			toastErr(error.message);
+			toast(error.message, true);
 		}
 	}
 
@@ -41,7 +41,7 @@ export class SummarizerPopup extends HTMLElement {
 		} catch (error) {
 			if (error.cause?.code === 20) return;
 			console.error(error);
-			toastErr(error.message);
+			toast(error.message, true);
 		}
 	}
 

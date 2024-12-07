@@ -77,7 +77,7 @@ export async function enableAutoTranslate() {
 	chrome.scripting.unregisterContentScripts({ ids: ["domain_auto_translator"] }).catch((err) => {});
 }
 
-//groupOpenedTabs
+//group all Opened Tabs
 export async function groupOpenedTabs() {
 	const tabs = await getTabs({ currentWindow: true });
 	const autoTabGrouper = new AutoTabGrouper();

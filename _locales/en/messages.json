@@ -486,5 +486,20 @@
 	"failed_to_rewrite_content": {
 		"message": "Failed to rewrite content",
 		"description": "Failed to rewrite content"
+	},
+
+	"note_saved": {
+		"message": "Note saved",
+		"description": "Note saved"
+	},
+
+	"source_and_target_language_are_identical": {
+		"message": "Source and target language are identical",
+		"description": "Source and target language are identical"
+	},
+
+	"translator_not_available": {
+		"message": "Translator not available",
+		"description": "Translator not available"
 	}
 }

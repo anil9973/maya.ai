@@ -33,7 +33,8 @@ export function captureShot() {
 		}
 		chrome.runtime.onMessage.addListener(msgListener);
 		const message = { msg: "captureShot", coordinate, screenHeight, withinViewPort };
-		await chrome.runtime.sendMessage(message);
+		const response = await chrome.runtime.sendMessage(message);
+		if (response.errCaused) return toast(response.errCaused, true);
 		toast("screenshot inserted");
 		setTimeout(() => document.querySelector("shot-cropper")?.remove(), 8000);
 		chrome.runtime.onMessage.removeListener(msgListener);
@@ -48,8 +49,9 @@ function fixStickyPosition(elem) {
 	return !isStatic;
 }
 
-function toast(msg) {
+function toast(msg, isErr) {
 	const snackbar = overLay.nextElementSibling;
+	snackbar.className = isErr ? "error" : "";
 	snackbar["hidden"] = false;
 	snackbar.textContent = msg;
 	setTimeout(() => (snackbar["hidden"] = true), 5100);
